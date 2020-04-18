@@ -9,7 +9,7 @@ public class Proxy {
     private HashMap<Integer, ProxyCommunicationInterface> serverConnections;
     private HashMap<Integer, ProxyCommunicationInterface> clientConnections;
 
-    public Proxy() throws IOException {
+    public static void main(String[] args) throws IOException {
         disabledServerToClientChannels = new HashMap<>();
         disabledServerToClientChannels = new HashMap<>();
 
@@ -17,7 +17,7 @@ public class Proxy {
             serverConnections.put(serverId, new ProxyCommunicationInterface(true, serverId));
         }
 
-        for(int clientId = 1; clientId <= Util.NUM_SERVERS; clientId++){
+        for(int clientId = 1; clientId <= Util.NUM_CLIENTS; clientId++){
             clientConnections.put(clientId, new ProxyCommunicationInterface(false, clientId));
         }
 
