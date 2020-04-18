@@ -12,6 +12,8 @@ public class Proxy {
     public static void main(String[] args) throws IOException {
         disabledServerToClientChannels = new HashMap<>();
         disabledServerToClientChannels = new HashMap<>();
+        serverConnections = new HashMap<>();
+        clientConnections = new HashMap<>();
 
         for(int serverId = 1; serverId <= Util.NUM_SERVERS; serverId++){
             serverConnections.put(serverId, new ProxyCommunicationInterface(true, serverId));
