@@ -22,22 +22,29 @@ public class ServerCommunicationInterface implements Runnable {
         socket = Util.getProxyServerSocket();
         out = new ObjectOutputStream(socket.getOutputStream());
         in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+
     }
 
     //we will listen for incoming messages when this runnable is executed
     @Override
     public void run() {
 
+        try {
+            out.writeObject(new Message(server.serverId));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         //we don't want to create too many threads so restict the thread pool for message handling
         ExecutorService pool = Executors.newFixedThreadPool(10);
-        int message;
+        Object message;
         while(true){
             try {
-                message = in.read();
-                System.out.println("server " + server.serverId + " received " + message);
-                out.write(server.serverId);
+                message = in.readObject();
+                if(message == null)
+                    continue;
 
-            } catch (IOException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 continue;
             }
         }

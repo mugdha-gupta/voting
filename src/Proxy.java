@@ -25,10 +25,6 @@ public class Proxy {
             clientConnections.put(clientId, new ProxyCommunicationInterface(false, clientId));
         }
 
-        for (Integer serverId : serverConnections.keySet()) {
-            serverConnections.get(serverId).out.write(serverId);
-        }
-
         ExecutorService serverPool = Executors.newFixedThreadPool(7);
         for (ProxyCommunicationInterface runnable: serverConnections.values()
         ) {
@@ -41,12 +37,6 @@ public class Proxy {
             clientPool.execute(runnable);
         }
 
-        for (Integer serverId : serverConnections.keySet()) {
-            serverConnections.get(serverId).out.write(serverId);
-        }
-        for (Integer clientId : clientConnections.keySet()) {
-            clientConnections.get(clientId).out.write(clientId);
-        }
 
     }
 

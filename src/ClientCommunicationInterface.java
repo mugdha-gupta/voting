@@ -28,16 +28,21 @@ public class ClientCommunicationInterface implements Runnable {
     @Override
     public void run() {
 
+        try {
+            out.writeObject(new Message(client.clientId));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //we don't want to create too many threads so restict the thread pool for message handling
         ExecutorService pool = Executors.newFixedThreadPool(10);
-        int message;
+        Object message;
         while(true){
             try {
-                message = in.read();
-                System.out.println("client " + client.clientId + " received " + message);
-                out.write( client.clientId );
+                message = in.readObject();
+                if(message == null)
+                    continue;
 
-            } catch (IOException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 continue;
             }
         }

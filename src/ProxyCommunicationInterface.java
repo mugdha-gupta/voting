@@ -32,18 +32,17 @@ public class ProxyCommunicationInterface implements Runnable {
 
         //we don't want to create too many threads so restict the thread pool for message handling
         ExecutorService pool = Executors.newFixedThreadPool(10);
-        int message;
+        Message message;
         while(true){
             try {
-                message = in.read();
+                message = (Message) in.readObject();
+                if( message == null)
+                    continue;
 
                 String type = isServerConnection? "server" : "client";
 
-                if(message == id)
-                    System.out.println(type + " " + id + " succes");
-                else
-                    System.out.println("received " + message + " from id");
-            } catch (IOException e) {
+                System.out.println(type + " " + id + " " + " returned " + message.id);
+            } catch (IOException | ClassNotFoundException e) {
                 continue;
             }
         }
