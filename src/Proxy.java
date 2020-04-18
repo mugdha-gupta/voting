@@ -6,8 +6,8 @@ public class Proxy {
     static HashMap<Integer, ArrayList<Integer>> disabledServerToServerChannels;
     static HashMap<Integer, ArrayList<Integer>> disabledServerToClientChannels;
 
-    private HashMap<Integer, ProxyCommunicationInterface> serverConnections;
-    private HashMap<Integer, ProxyCommunicationInterface> clientConnections;
+    static private HashMap<Integer, ProxyCommunicationInterface> serverConnections;
+    static private HashMap<Integer, ProxyCommunicationInterface> clientConnections;
 
     public static void main(String[] args) throws IOException {
         disabledServerToClientChannels = new HashMap<>();
