@@ -24,6 +24,7 @@ public class Server {
         server = this;
         this.serverId = serverId;
         communicationInterface = new ServerCommunicationInterface(server);
+        communicationInterface.run();
     }
 
 }

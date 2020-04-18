@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Proxy {
     static HashMap<Integer, ArrayList<Integer>> disabledServerToServerChannels;
@@ -27,8 +29,23 @@ public class Proxy {
             serverConnections.get(serverId).out.write(serverId);
         }
 
+        ExecutorService serverPool = Executors.newFixedThreadPool(7);
+        for (ProxyCommunicationInterface runnable: serverConnections.values()
+        ) {
+            serverPool.execute(runnable);
+        }
+
+        ExecutorService clientPool = Executors.newFixedThreadPool(5);
+        for (ProxyCommunicationInterface runnable: clientConnections.values()
+        ) {
+            clientPool.execute(runnable);
+        }
+
         for (Integer serverId : serverConnections.keySet()) {
             serverConnections.get(serverId).out.write(serverId);
+        }
+        for (Integer clientId : clientConnections.keySet()) {
+            clientConnections.get(clientId).out.write(clientId);
         }
 
     }

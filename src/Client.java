@@ -17,5 +17,6 @@ public class Client {
         client = this;
         clientId = id;
         communicationInterface = new ClientCommunicationInterface(client);
+        communicationInterface.run();
     }
 }
