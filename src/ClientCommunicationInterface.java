@@ -45,8 +45,6 @@ public class ClientCommunicationInterface implements Runnable {
             e.printStackTrace();
         }
 
-        //we don't want to create too many threads so restict the thread pool for message handling
-        ExecutorService pool = Executors.newFixedThreadPool(10);
         Object message;
         while(true){
             try {
