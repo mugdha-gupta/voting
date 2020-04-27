@@ -58,6 +58,7 @@ public class ClientCommunicationInterface implements Runnable {
                     sendToAll();
                 }
 
+
             } catch (IOException | ClassNotFoundException e) {
                 continue;
             }

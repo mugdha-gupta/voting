@@ -130,21 +130,21 @@ public class Proxy {
 
     }
 
-    public boolean sendServerToServerMessage(int senderServerId, int receiverServerId, Object message) throws IOException {
+    public static boolean sendServerToServerMessage(int senderServerId, int receiverServerId, Object message) throws IOException {
         if(disabledServerToServerChannels.containsKey(senderServerId) && disabledServerToServerChannels.get(senderServerId).contains(receiverServerId))
             return false;
         serverConnections.get(receiverServerId).sendMessage(message);
         return true;
     }
 
-    public boolean sendServerToClientMessage(int serverId, int clientId, Object message) throws IOException {
+    public static  boolean sendServerToClientMessage(int serverId, int clientId, Object message) throws IOException {
         if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToServerChannels.get(serverId).contains(clientId))
             return false;
         clientConnections.get(clientId).sendMessage(message);
         return true;
     }
 
-    public boolean sendClientToServerMessage(int clientId, int serverId, Object message) throws IOException {
+    public static  boolean sendClientToServerMessage(int clientId, int serverId, Object message) throws IOException {
         if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToServerChannels.get(serverId).contains(clientId))
             return false;
         serverConnections.get(serverId).sendMessage(message);

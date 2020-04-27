@@ -58,6 +58,9 @@ public class ServerCommunicationInterface implements Runnable {
                     sendToAll();
                 }
 
+                if(message instanceof  Message)
+                    System.out.println(((Message) message).message);
+
             } catch (IOException | ClassNotFoundException e) {
                 continue;
             }

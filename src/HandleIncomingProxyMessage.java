@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 public class HandleIncomingProxyMessage implements  Runnable {
 
     Object message;
@@ -18,7 +20,20 @@ public class HandleIncomingProxyMessage implements  Runnable {
         }
 
         else if(message instanceof  Message){
-            System.out.println(((Message) message).message);
+            if(isServerConnection) {
+                try {
+                    Proxy.sendServerToServerMessage(((Message) message).id, ((Message) message).recipientId, message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                try {
+                    Proxy.sendClientToServerMessage(((Message) message).id, ((Message) message).recipientId, message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
