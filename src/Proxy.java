@@ -7,11 +7,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Proxy {
-    static HashMap<Integer, ArrayList<Integer>> disabledServerToServerChannels;
-    static HashMap<Integer, ArrayList<Integer>> disabledServerToClientChannels;
+    static public HashMap<Integer, ArrayList<Integer>> disabledServerToServerChannels;
+    static public HashMap<Integer, ArrayList<Integer>> disabledServerToClientChannels;
 
-    static private HashMap<Integer, ProxyCommunicationInterface> serverConnections;
-    static private HashMap<Integer, ProxyCommunicationInterface> clientConnections;
+    static public HashMap<Integer, ProxyCommunicationInterface> serverConnections;
+    static public HashMap<Integer, ProxyCommunicationInterface> clientConnections;
 
     public static void main(String[] args) throws IOException {
         disabledServerToClientChannels = new HashMap<>();
@@ -131,6 +131,8 @@ public class Proxy {
     }
 
     public static boolean sendServerToServerMessage(int senderServerId, int receiverServerId, Object message) throws IOException {
+        if(disabledServerToServerChannels == null)
+            return false;
         if(disabledServerToServerChannels.containsKey(senderServerId) && disabledServerToServerChannels.get(senderServerId).contains(receiverServerId))
             return false;
         serverConnections.get(receiverServerId).sendMessage(message);
