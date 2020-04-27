@@ -39,7 +39,7 @@ public class ProxyCommunicationInterface implements Runnable {
     public void run() {
 
         //we don't want to create too many threads so restict the thread pool for message handling
-        ExecutorService pool = Executors.newFixedThreadPool(10);
+        ExecutorService pool = Executors.newFixedThreadPool(5);
         Object message;
         while(true){
             try {
