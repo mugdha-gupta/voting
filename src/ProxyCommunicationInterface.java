@@ -32,10 +32,10 @@ public class ProxyCommunicationInterface implements Runnable {
 
         //we don't want to create too many threads so restict the thread pool for message handling
         ExecutorService pool = Executors.newFixedThreadPool(10);
-        Message message;
+        GenericMessage message;
         while(true){
             try {
-                message = (Message) in.readObject();
+                message = (GenericMessage) in.readObject();
                 if( message == null)
                     continue;
 

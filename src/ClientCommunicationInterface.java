@@ -24,15 +24,21 @@ public class ClientCommunicationInterface implements Runnable {
         in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
+    void sendMessage(GenericMessage message) throws IOException {
+        out.writeObject(message);
+    }
+
+
     //we will listen for incoming messages when this runnable is executed
     @Override
     public void run() {
 
         try {
-            out.writeObject(new Message(client.clientId));
+            sendMessage(new GenericMessage(client.clientId));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         //we don't want to create too many threads so restict the thread pool for message handling
         ExecutorService pool = Executors.newFixedThreadPool(10);
         Object message;

@@ -25,12 +25,16 @@ public class ServerCommunicationInterface implements Runnable {
 
     }
 
+    void sendMessage(GenericMessage message) throws IOException {
+        out.writeObject(message);
+    }
+
     //we will listen for incoming messages when this runnable is executed
     @Override
     public void run() {
 
         try {
-            out.writeObject(new Message(server.serverId));
+            sendMessage(new GenericMessage(server.serverId));
         } catch (IOException e) {
             e.printStackTrace();
         }
