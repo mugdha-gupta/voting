@@ -28,6 +28,12 @@ public class ServerCommunicationInterface implements Runnable {
     void sendMessage(GenericMessage message) throws IOException {
         out.writeObject(message);
     }
+    void sendMessage(Message message) throws IOException {
+        out.writeObject(message);
+    }
+    void sendMessage(Object message) throws IOException {
+        out.writeObject(message);
+    }
 
     //we will listen for incoming messages when this runnable is executed
     @Override
@@ -48,9 +54,23 @@ public class ServerCommunicationInterface implements Runnable {
                 if(message == null)
                     continue;
 
+                if(message instanceof  GenericMessage && ((GenericMessage) message).id == -1){
+                    sendToAll();
+                }
+
             } catch (IOException | ClassNotFoundException e) {
                 continue;
             }
+        }
+    }
+
+    private void sendToAll() throws IOException {
+        for(int i = 1; i <= 7 ; i++){
+            if(i == server.serverId)
+                continue;
+            sendMessage(new Message(server.serverId, i, "server " + server.serverId + "'s" +
+                    " message to server " + i + " was successful " ));
+
         }
     }
 

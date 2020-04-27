@@ -28,7 +28,13 @@ public class ClientCommunicationInterface implements Runnable {
         out.writeObject(message);
     }
 
+    void sendMessage(Message message) throws IOException {
+        out.writeObject(message);
+    }
 
+    void sendMessage(Object message) throws IOException {
+        out.writeObject(message);
+    }
     //we will listen for incoming messages when this runnable is executed
     @Override
     public void run() {
@@ -48,9 +54,20 @@ public class ClientCommunicationInterface implements Runnable {
                 if(message == null)
                     continue;
 
+                if(message instanceof  GenericMessage && ((GenericMessage) message).id == -1){
+                    sendToAll();
+                }
+
             } catch (IOException | ClassNotFoundException e) {
                 continue;
             }
+        }
+    }
+
+    private void sendToAll() throws IOException {
+        for(int i = 1; i <= 7 ; i++){
+            sendMessage(new Message(client.clientId, i, "client " + client.clientId + "'s message to server " +
+                    " " + i + " was successful"));
         }
     }
 

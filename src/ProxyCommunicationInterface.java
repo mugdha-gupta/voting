@@ -26,22 +26,28 @@ public class ProxyCommunicationInterface implements Runnable {
         in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
+    public void sendMessage(GenericMessage message) throws IOException {
+        out.writeObject(message);
+    }
+
+    public void sendMessage(Object message) throws IOException {
+        out.writeObject(message);
+    }
+
     //we will listen for incoming messages when this runnable is executed
     @Override
     public void run() {
 
         //we don't want to create too many threads so restict the thread pool for message handling
         ExecutorService pool = Executors.newFixedThreadPool(10);
-        GenericMessage message;
+        Object message;
         while(true){
             try {
-                message = (GenericMessage) in.readObject();
+                message = in.readObject();
                 if( message == null)
                     continue;
 
-                String type = isServerConnection? "server" : "client";
-
-                System.out.println(type + " " + id + " " + " returned " + message.id);
+                pool.execute(new HandleIncomingProxyMessage(message, id, isServerConnection));
             } catch (IOException | ClassNotFoundException e) {
                 continue;
             }

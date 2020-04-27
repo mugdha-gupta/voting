@@ -1,6 +1,8 @@
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -37,8 +39,58 @@ public class Proxy {
             clientPool.execute(runnable);
         }
 
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.next();
+        if(input == "part"){
+            disableConnections();
+        }
+
+        sendToAll(new GenericMessage(-1));
 
     }
+
+    private static void sendToAll(GenericMessage message) throws IOException {
+        for (ProxyCommunicationInterface runnable: serverConnections.values()
+        ) {
+            runnable.sendMessage(message);
+        }
+        for (ProxyCommunicationInterface runnable: clientConnections.values()
+        ) {
+            runnable.sendMessage(message);
+        }
+    }
+
+    private static void disableConnections() {
+        disableServerToServerConnection(1, 2);
+        disableServerToServerConnection(1, 3);
+        disableServerToServerConnection(1, 4);
+        disableServerToServerConnection(1, 5);
+        disableServerToServerConnection(1, 6);
+        disableServerToServerConnection(1, 7);
+
+        disableServerToClientConnection(1, 3);
+        disableServerToClientConnection(1, 4);
+        disableServerToClientConnection(1, 5);
+
+        disableServerToClientConnection(2, 1);
+        disableServerToClientConnection(2, 2);
+
+        disableServerToClientConnection(3, 1);
+        disableServerToClientConnection(3, 2);
+
+        disableServerToClientConnection(4, 1);
+        disableServerToClientConnection(4, 2);
+
+        disableServerToClientConnection(5, 1);
+        disableServerToClientConnection(5, 2);
+
+        disableServerToClientConnection(6, 1);
+        disableServerToClientConnection(6, 2);
+
+        disableServerToClientConnection(7, 1);
+        disableServerToClientConnection(7, 2);
+    }
+
 
     public static void disableServerToServerConnection(int serverA, int serverB){
         ArrayList<Integer> serverAChannels;
@@ -78,19 +130,25 @@ public class Proxy {
 
     }
 
-    public boolean sendServerToServerMessage(int senderServerId, int receiverServerId){
-        //TODO: implement
-        return false;
+    public boolean sendServerToServerMessage(int senderServerId, int receiverServerId, Object message) throws IOException {
+        if(disabledServerToServerChannels.containsKey(senderServerId) && disabledServerToServerChannels.get(senderServerId).contains(receiverServerId))
+            return false;
+        serverConnections.get(receiverServerId).sendMessage(message);
+        return true;
     }
 
-    public boolean sendServerToClientMessage(int serverId, int clientId){
-        //TODO: implement
-        return false;
+    public boolean sendServerToClientMessage(int serverId, int clientId, Object message) throws IOException {
+        if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToServerChannels.get(serverId).contains(clientId))
+            return false;
+        clientConnections.get(clientId).sendMessage(message);
+        return true;
     }
 
-    public boolean sendClientToServerMessage(int clientId, int serverId){
-        //TODO: implement
-        return false;
+    public boolean sendClientToServerMessage(int clientId, int serverId, Object message) throws IOException {
+        if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToServerChannels.get(serverId).contains(clientId))
+            return false;
+        serverConnections.get(serverId).sendMessage(message);
+        return true;
     }
 
 }
