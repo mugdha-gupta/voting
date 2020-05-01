@@ -44,10 +44,10 @@ public class Proxy {
             disableConnections();
         }
 
-        System.out.println("connections disabled");
-        System.out.println("server connections");
+//        System.out.println("connections disabled");
+//        System.out.println("server connections");
 //        System.out.println(disabledServerToServerChannels.toString());
-        System.out.println("client connections");
+//        System.out.println("client connections");
 //        System.out.println(disabledServerToClientChannels.toString());
         for (ProxyCommunicationInterface runnable: clientConnections.values()
         ) {
@@ -109,6 +109,7 @@ public class Proxy {
 
         disabledServerToServerChannels.put(serverA, serverAChannels);
         disabledServerToServerChannels.put(serverB, serverBChannels);
+        System.out.println("ss");
         System.out.println(disabledServerToClientChannels.toString());
     }
 
@@ -124,6 +125,8 @@ public class Proxy {
             serverChannels.add(client);
 
         disabledServerToClientChannels.put(server, serverChannels);
+        System.out.println("sc");
+        System.out.println(disabledServerToClientChannels.toString());
 
     }
 
