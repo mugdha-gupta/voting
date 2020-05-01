@@ -39,7 +39,7 @@ public class Proxy {
         }
 
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.next();
+        String input = scanner.nextLine();
         if(input == "part"){
             System.out.println("hwloo`");
             disableConnections();
