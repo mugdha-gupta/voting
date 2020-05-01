@@ -131,8 +131,13 @@ public class Proxy {
     }
 
     public static boolean sendServerToServerMessage(int senderServerId, int receiverServerId, Object message) throws IOException {
-        if(disabledServerToServerChannels.containsKey(senderServerId) && disabledServerToServerChannels.get(senderServerId).contains(receiverServerId))
-            return false;
+        if(disabledServerToServerChannels != null){
+            if(disabledServerToServerChannels.containsKey(senderServerId)){
+                if(disabledServerToServerChannels.get(senderServerId).contains(receiverServerId))
+                    return false;
+            }
+        }
+
         serverConnections.get(receiverServerId).sendMessage(message);
         return true;
     }
