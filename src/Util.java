@@ -20,34 +20,6 @@ public class Util {
     static final int SERVER_PROXY_LISTENING_PORT = 13000;
     static final int CLIENT_PROXY_LISTENING_PORT = 14000;
 
-
-    //Port that proxy listens to connect sockets and clients
-    //TODO: implement
-
-
-     //returns a socket to a client connection
-    static Socket getSocketAsClient(int serverId, int localPort, int remotePort) throws IOException {
-        //set socket address and bind
-        Socket socket = new Socket();
-        socket.setReuseAddress(true);
-        InetSocketAddress localInsa = new InetSocketAddress(InetAddress.getLocalHost(), localPort);
-        socket.bind(localInsa);
-
-        //set remote address and connect
-        InetSocketAddress remoteInsa = new InetSocketAddress(serverAddresses[serverId-1], remotePort);
-        socket.connect(remoteInsa);
-        return socket;
-    }
-
-//    //returns a socket to a server
-//    static Socket getSocketAsServer(int remotePort) throws IOException {
-//        //create listener and wait for connection
-//        ServerSocket listener = new ServerSocket(remotePort);
-//        Socket socket = listener.accept();
-//        listener.close();
-//        return socket;
-//    }
-
     //returns the socket to the proxy for the server
     static Socket getProxyServerSocket() throws IOException {
         //create local socket
