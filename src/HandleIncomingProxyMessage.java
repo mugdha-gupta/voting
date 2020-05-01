@@ -14,12 +14,8 @@ public class HandleIncomingProxyMessage implements  Runnable {
 
     @Override
     public void run() {
-        if(message instanceof GenericMessage){
-            String type = isServerConnection? "server" : "client";
-            System.out.println(type + " " + localId + " " + " returned " + ((GenericMessage) message).id);
-        }
 
-        else if(message instanceof  Message){
+        if(message instanceof  Message){
             if(isServerConnection) {
                 try {
                     System.out.println("reached handle runnable");

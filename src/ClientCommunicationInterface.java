@@ -24,17 +24,11 @@ public class ClientCommunicationInterface implements Runnable {
         in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
-    void sendMessage(GenericMessage message) throws IOException {
-        out.writeObject(message);
-    }
 
     void sendMessage(Message message) throws IOException {
         out.writeObject(message);
     }
 
-    void sendMessage(Object message) throws IOException {
-        out.writeObject(message);
-    }
     //we will listen for incoming messages when this runnable is executed
     @Override
     public void run() {
