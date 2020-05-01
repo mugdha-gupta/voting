@@ -158,6 +158,7 @@ public class Proxy {
     }
 
     public static  boolean sendClientToServerMessage(int clientId, int serverId, MyMessage myMessage) throws IOException {
+        System.out.println(disabledServerToClientChannels.toString());
         if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToServerChannels.get(serverId).contains(clientId))
         {
             System.out.println("blocked message from client " + clientId + " to server " + serverId);
