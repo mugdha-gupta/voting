@@ -32,5 +32,13 @@ public class HandleIncomingProxyMessage implements  Runnable {
                 }
             }
         }
+
+        if(message instanceof ClientMessage){
+            try {
+                Proxy.sendServerToClientMessage(((ClientMessage) message).id, ((ClientMessage) message).recipientId, (ClientMessage) message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

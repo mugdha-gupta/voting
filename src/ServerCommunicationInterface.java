@@ -26,12 +26,15 @@ public class ServerCommunicationInterface implements Runnable {
     synchronized void sendMessage(MyMessage myMessage) throws IOException {
         out.writeObject(myMessage);
     }
+    synchronized void sendMessage(ClientMessage myMessage) throws IOException {
+        out.writeObject(myMessage);
+    }
     //we will listen for incoming messages when this runnable is executed
     @Override
     public void run() {
 
         try {
-            sendToAll();
+            sendToAllClients();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,11 +55,20 @@ public class ServerCommunicationInterface implements Runnable {
         }
     }
 
-    private void sendToAll() throws IOException {
-        for(int i = 1; i <= 7 ; i++){
+    private void sendToAllServers() throws IOException {
+        for(int i = 1; i <= Util.NUM_SERVERS ; i++){
             if(i == server.serverId)
                 continue;
             sendMessage(new MyMessage(server.serverId, i, "server " + server.serverId ));
+
+        }
+    }
+
+    private void sendToAllClients() throws IOException {
+        for(int i = 1; i <= Util.NUM_CLIENTS ; i++){
+            if(i == server.serverId)
+                continue;
+            sendMessage(new ClientMessage(server.serverId, i, "server " + server.serverId ));
 
         }
     }

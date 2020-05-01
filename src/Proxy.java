@@ -133,7 +133,7 @@ public class Proxy {
         return false;
     }
 
-    public static  boolean sendServerToClientMessage(int serverId, int clientId, MyMessage myMessage) throws IOException {
+    public static  boolean sendServerToClientMessage(int serverId, int clientId, ClientMessage myMessage) throws IOException {
         if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToServerChannels.get(serverId).contains(clientId))
             return false;
         clientConnections.get(clientId).sendMessage(myMessage);
