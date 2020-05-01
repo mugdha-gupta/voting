@@ -11,7 +11,7 @@ import java.net.Socket;
  */
 public class Util {
     static String[] serverAddresses = {"dc01.utdallas.edu", "dc02.utdallas.edu", "dc03.utdallas.edu", "dc04.utdallas.edu", "dc05.utdallas.edu", "dc06.utdallas.edu", "dc07.utdallas.edu"};
-    static String proxyAddress = "dc08.utdallas.edu";
+    static String proxyAddress = "dc10.utdallas.edu";
 
     static final int NUM_SERVERS = 7;
     static final int NUM_CLIENTS = 5;
