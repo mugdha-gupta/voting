@@ -47,7 +47,7 @@ public class ClientCommunicationInterface implements Runnable {
 
         if(client.clientId == 1){
             try {
-                sendMessage(new Message(client.clientId, 1, "hello world"));
+                sendToAll();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -73,8 +73,7 @@ public class ClientCommunicationInterface implements Runnable {
 
     private void sendToAll() throws IOException {
         for(int i = 1; i <= 7 ; i++){
-            sendMessage(new Message(client.clientId, i, "client " + client.clientId + "'s message to server " +
-                    " " + i + " was successful"));
+            sendMessage(new Message(client.clientId, i, "hello world"));
         }
     }
 
