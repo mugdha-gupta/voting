@@ -131,15 +131,20 @@ public class Proxy {
     }
 
     public static boolean sendServerToServerMessage(int senderServerId, int receiverServerId, Object message) throws IOException {
-        if(disabledServerToServerChannels != null){
-            if(disabledServerToServerChannels.containsKey(senderServerId)){
-                if(disabledServerToServerChannels.get(senderServerId).contains(receiverServerId))
-                    return false;
+        if(disabledServerToServerChannels == null){
+            serverConnections.get(receiverServerId).sendMessage(message);
+            return true;
+        }
+
+        else if(disabledServerToServerChannels.containsKey(senderServerId)){
+            ArrayList<Integer> banner = disabledServerToServerChannels.get(senderServerId);
+            if(!banner.contains(receiverServerId)){
+                serverConnections.get(receiverServerId).sendMessage(message);
+                return true;
             }
         }
 
-        serverConnections.get(receiverServerId).sendMessage(message);
-        return true;
+        return false;
     }
 
     public static  boolean sendServerToClientMessage(int serverId, int clientId, Object message) throws IOException {
