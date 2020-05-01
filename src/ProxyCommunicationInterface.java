@@ -32,7 +32,9 @@ public class ProxyCommunicationInterface implements Runnable {
     synchronized public void sendMessage(ClientMessage myMessage) throws IOException {
         out.writeObject(myMessage);
     }
-
+    synchronized public void sendMessage(PartitionMessage myMessage) throws IOException {
+        out.writeObject(myMessage);
+    }
     //we will listen for incoming messages when this runnable is executed
     @Override
     public void run() {

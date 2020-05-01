@@ -44,6 +44,11 @@ public class Proxy {
             disableConnections();
         }
 
+        for (ProxyCommunicationInterface runnable: clientConnections.values()
+        ) {
+            runnable.sendMessage(new PartitionMessage(-1, -1, "part"));
+        }
+
     }
 
     private static void disableConnections() {

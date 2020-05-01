@@ -33,11 +33,11 @@ public class ServerCommunicationInterface implements Runnable {
     @Override
     public void run() {
 
-        try {
-            sendToAllClients();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            sendToAllClients();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         Object message;
         while(true){

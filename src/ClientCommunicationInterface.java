@@ -1,3 +1,5 @@
+import com.sun.java.swing.plaf.windows.TMSchema;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -40,6 +42,10 @@ public class ClientCommunicationInterface implements Runnable {
 
                 if(message instanceof ClientMessage)
                     System.out.println(((ClientMessage) message).message);
+
+                if(message instanceof PartitionMessage){
+                    sendToAll();
+                }
 
             } catch (IOException | ClassNotFoundException e) {
                 continue;
