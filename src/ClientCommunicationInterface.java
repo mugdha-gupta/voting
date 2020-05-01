@@ -45,9 +45,10 @@ public class ClientCommunicationInterface implements Runnable {
 //            e.printStackTrace();
 //        }
 
-        if(client.clientId == 1){
+        if(client.clientId == 2){
             try {
                 sendToAll();
+                System.out.println("client " + client.clientId + "Sent to all");
             } catch (IOException e) {
                 e.printStackTrace();
             }
