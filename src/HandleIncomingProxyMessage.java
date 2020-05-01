@@ -23,14 +23,14 @@ public class HandleIncomingProxyMessage implements  Runnable {
             if(isServerConnection) {
                 try {
                     System.out.println("reached handle runnable");
-                    Proxy.sendServerToServerMessage(((Message) message).id, ((Message) message).recipientId, message);
+                    Proxy.sendServerToServerMessage(((Message) message).id, ((Message) message).recipientId, (Message) message);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
             else {
                 try {
-                    Proxy.sendClientToServerMessage(((Message) message).id, ((Message) message).recipientId, message);
+                    Proxy.sendClientToServerMessage(((Message) message).id, ((Message) message).recipientId,(Message) message);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

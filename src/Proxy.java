@@ -117,7 +117,7 @@ public class Proxy {
 
     }
 
-    public static boolean sendServerToServerMessage(int senderServerId, int receiverServerId, Object message) throws IOException {
+    public static boolean sendServerToServerMessage(int senderServerId, int receiverServerId, Message message) throws IOException {
         if(disabledServerToServerChannels == null){
             serverConnections.get(receiverServerId).sendMessage(message);
             return true;
@@ -134,14 +134,14 @@ public class Proxy {
         return false;
     }
 
-    public static  boolean sendServerToClientMessage(int serverId, int clientId, Object message) throws IOException {
+    public static  boolean sendServerToClientMessage(int serverId, int clientId, Message message) throws IOException {
         if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToServerChannels.get(serverId).contains(clientId))
             return false;
-        clientConnections.get(clientId).sendMessage(message);
+        clientConnections.get(clientId).sendMessage( message);
         return true;
     }
 
-    public static  boolean sendClientToServerMessage(int clientId, int serverId, Object message) throws IOException {
+    public static  boolean sendClientToServerMessage(int clientId, int serverId, Message message) throws IOException {
         if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToServerChannels.get(serverId).contains(clientId))
             return false;
         serverConnections.get(serverId).sendMessage(message);
