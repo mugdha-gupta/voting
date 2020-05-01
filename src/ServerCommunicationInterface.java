@@ -23,7 +23,7 @@ public class ServerCommunicationInterface implements Runnable {
 
     }
 
-    void sendMessage(MyMessage myMessage) throws IOException {
+    synchronized void sendMessage(MyMessage myMessage) throws IOException {
         out.writeObject(myMessage);
     }
     //we will listen for incoming messages when this runnable is executed

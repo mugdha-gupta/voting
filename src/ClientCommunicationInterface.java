@@ -23,7 +23,7 @@ public class ClientCommunicationInterface implements Runnable {
     }
 
 
-    void sendMessage(MyMessage myMessage) throws IOException {
+    synchronized void sendMessage(MyMessage myMessage) throws IOException {
         out.writeObject(myMessage);
     }
 
