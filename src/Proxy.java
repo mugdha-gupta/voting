@@ -45,6 +45,10 @@ public class Proxy {
         }
 
         System.out.println("connections disabled");
+        System.out.println("server connections");
+        System.out.println(disabledServerToServerChannels.toString());
+        System.out.println("client connections");
+        System.out.println(disabledServerToClientChannels.toString());
         for (ProxyCommunicationInterface runnable: clientConnections.values()
         ) {
             runnable.sendMessage(new PartitionMessage(-1, -1, "part"));
