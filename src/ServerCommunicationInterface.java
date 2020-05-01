@@ -66,6 +66,8 @@ public class ServerCommunicationInterface implements Runnable {
     }
 
     private void sendToAll() throws IOException {
+        if(server.serverId != 1)
+            return;
         for(int i = 1; i <= 7 ; i++){
             if(i == server.serverId)
                 continue;
