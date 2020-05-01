@@ -45,19 +45,6 @@ public class Proxy {
             disableConnections();
         }
 
-        sendToAll(new GenericMessage(-1));
-
-    }
-
-    private static void sendToAll(GenericMessage message) throws IOException {
-        for (ProxyCommunicationInterface runnable: serverConnections.values()
-        ) {
-            runnable.sendMessage(message);
-        }
-        for (ProxyCommunicationInterface runnable: clientConnections.values()
-        ) {
-            runnable.sendMessage(message);
-        }
     }
 
     private static void disableConnections() {

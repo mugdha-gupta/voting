@@ -39,32 +39,12 @@ public class ClientCommunicationInterface implements Runnable {
     @Override
     public void run() {
 
-//        try {
-//            sendMessage(new GenericMessage(client.clientId));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//        if(client.clientId == 5){
-//            try {
-//                sendToAll();
-//                System.out.println("client " + client.clientId + "Sent to all");
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
         Object message;
         while(true){
             try {
                 message = in.readObject();
                 if(message == null)
                     continue;
-
-                if(message instanceof  GenericMessage && ((GenericMessage) message).id == -1){
-                    sendToAll();
-                }
-
 
             } catch (IOException | ClassNotFoundException e) {
                 continue;
