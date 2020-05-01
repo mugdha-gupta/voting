@@ -40,7 +40,7 @@ public class ServerCommunicationInterface implements Runnable {
     public void run() {
 
         try {
-            sendMessage(new GenericMessage(server.serverId));
+            sendToAll();
         } catch (IOException e) {
             e.printStackTrace();
         }
