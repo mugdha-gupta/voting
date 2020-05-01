@@ -1,5 +1,3 @@
-import com.sun.java.swing.plaf.windows.TMSchema;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -44,6 +42,7 @@ public class ClientCommunicationInterface implements Runnable {
                     System.out.println(((ClientMessage) message).message);
 
                 if(message instanceof PartitionMessage){
+                    System.out.println(((PartitionMessage)message).message);
                     sendToAll();
                 }
 

@@ -26,6 +26,7 @@ public class HandleIncomingProxyMessage implements  Runnable {
             }
             else {
                 try {
+                    System.out.println("client message received");
                     Proxy.sendClientToServerMessage(((MyMessage) message).id, ((MyMessage) message).recipientId,(MyMessage) message);
                 } catch (IOException e) {
                     e.printStackTrace();
