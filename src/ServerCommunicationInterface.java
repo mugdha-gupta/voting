@@ -39,11 +39,11 @@ public class ServerCommunicationInterface implements Runnable {
     @Override
     public void run() {
 
-        try {
-            sendMessage(new GenericMessage(server.serverId));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            sendMessage(new GenericMessage(server.serverId));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         Object message;
         while(true){
