@@ -39,11 +39,11 @@ public class ServerCommunicationInterface implements Runnable {
     @Override
     public void run() {
 
-//        try {
-//            sendMessage(new GenericMessage(server.serverId));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            sendMessage(new GenericMessage(server.serverId));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Object message;
         while(true){
@@ -69,8 +69,7 @@ public class ServerCommunicationInterface implements Runnable {
         for(int i = 1; i <= 7 ; i++){
             if(i == server.serverId)
                 continue;
-            sendMessage(new Message(server.serverId, i, "server " + server.serverId + "'s" +
-                    " message to server " + i + " was successful " ));
+            sendMessage(new Message(server.serverId, i, "server " + server.serverId ));
 
         }
     }
