@@ -54,7 +54,7 @@ public class ClientCommunicationInterface implements Runnable {
 
     private void sendToAll() throws IOException {
         for(int i = 1; i <= 7 ; i++){
-            sendMessage(new MyMessage(client.clientId, i, "hello world"));
+            sendMessage(new MyMessage(client.clientId, i, "hello world from client " + client.clientId));
         }
     }
 
