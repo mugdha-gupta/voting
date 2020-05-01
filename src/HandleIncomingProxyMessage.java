@@ -15,18 +15,18 @@ public class HandleIncomingProxyMessage implements  Runnable {
     @Override
     public void run() {
 
-        if(message instanceof  Message){
+        if(message instanceof MyMessage){
             if(isServerConnection) {
                 try {
                     System.out.println("reached handle runnable");
-                    Proxy.sendServerToServerMessage(((Message) message).id, ((Message) message).recipientId, (Message) message);
+                    Proxy.sendServerToServerMessage(((MyMessage) message).id, ((MyMessage) message).recipientId, (MyMessage) message);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
             else {
                 try {
-                    Proxy.sendClientToServerMessage(((Message) message).id, ((Message) message).recipientId,(Message) message);
+                    Proxy.sendClientToServerMessage(((MyMessage) message).id, ((MyMessage) message).recipientId,(MyMessage) message);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

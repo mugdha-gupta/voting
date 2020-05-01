@@ -26,8 +26,8 @@ public class ProxyCommunicationInterface implements Runnable {
         in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
-    public void sendMessage(Message  message) throws IOException {
-        out.writeObject(message);
+    public void sendMessage(MyMessage myMessage) throws IOException {
+        out.writeObject(myMessage);
     }
 
     //we will listen for incoming messages when this runnable is executed

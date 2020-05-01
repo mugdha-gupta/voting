@@ -23,8 +23,8 @@ public class ServerCommunicationInterface implements Runnable {
 
     }
 
-    void sendMessage(Message message) throws IOException {
-        out.writeObject(message);
+    void sendMessage(MyMessage myMessage) throws IOException {
+        out.writeObject(myMessage);
     }
     //we will listen for incoming messages when this runnable is executed
     @Override
@@ -43,8 +43,8 @@ public class ServerCommunicationInterface implements Runnable {
                 if(message == null)
                     continue;
 
-                if(message instanceof  Message)
-                    System.out.println(((Message) message).message);
+                if(message instanceof MyMessage)
+                    System.out.println(((MyMessage) message).message);
 
             } catch (IOException | ClassNotFoundException e) {
                 continue;
@@ -56,7 +56,7 @@ public class ServerCommunicationInterface implements Runnable {
         for(int i = 1; i <= 7 ; i++){
             if(i == server.serverId)
                 continue;
-            sendMessage(new Message(server.serverId, i, "server " + server.serverId ));
+            sendMessage(new MyMessage(server.serverId, i, "server " + server.serverId ));
 
         }
     }

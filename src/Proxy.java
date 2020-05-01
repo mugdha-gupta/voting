@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -117,16 +116,16 @@ public class Proxy {
 
     }
 
-    public static boolean sendServerToServerMessage(int senderServerId, int receiverServerId, Message message) throws IOException {
+    public static boolean sendServerToServerMessage(int senderServerId, int receiverServerId, MyMessage myMessage) throws IOException {
         if(disabledServerToServerChannels == null){
-            serverConnections.get(receiverServerId).sendMessage(message);
+            serverConnections.get(receiverServerId).sendMessage(myMessage);
             return true;
         }
 
         else if(disabledServerToServerChannels.containsKey(senderServerId)){
             ArrayList<Integer> banner = disabledServerToServerChannels.get(senderServerId);
             if(!banner.contains(receiverServerId)){
-                serverConnections.get(receiverServerId).sendMessage(message);
+                serverConnections.get(receiverServerId).sendMessage(myMessage);
                 return true;
             }
         }
@@ -134,17 +133,17 @@ public class Proxy {
         return false;
     }
 
-    public static  boolean sendServerToClientMessage(int serverId, int clientId, Message message) throws IOException {
+    public static  boolean sendServerToClientMessage(int serverId, int clientId, MyMessage myMessage) throws IOException {
         if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToServerChannels.get(serverId).contains(clientId))
             return false;
-        clientConnections.get(clientId).sendMessage( message);
+        clientConnections.get(clientId).sendMessage(myMessage);
         return true;
     }
 
-    public static  boolean sendClientToServerMessage(int clientId, int serverId, Message message) throws IOException {
+    public static  boolean sendClientToServerMessage(int clientId, int serverId, MyMessage myMessage) throws IOException {
         if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToServerChannels.get(serverId).contains(clientId))
             return false;
-        serverConnections.get(serverId).sendMessage(message);
+        serverConnections.get(serverId).sendMessage(myMessage);
         return true;
     }
 

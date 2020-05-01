@@ -3,8 +3,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /*
  * MyServerSocket class
@@ -25,8 +23,8 @@ public class ClientCommunicationInterface implements Runnable {
     }
 
 
-    void sendMessage(Message message) throws IOException {
-        out.writeObject(message);
+    void sendMessage(MyMessage myMessage) throws IOException {
+        out.writeObject(myMessage);
     }
 
     //we will listen for incoming messages when this runnable is executed
@@ -48,7 +46,7 @@ public class ClientCommunicationInterface implements Runnable {
 
     private void sendToAll() throws IOException {
         for(int i = 1; i <= 7 ; i++){
-            sendMessage(new Message(client.clientId, i, "hello world"));
+            sendMessage(new MyMessage(client.clientId, i, "hello world"));
         }
     }
 
