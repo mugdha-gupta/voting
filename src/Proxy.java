@@ -90,6 +90,9 @@ public class Proxy {
 
 
     public static void disableServerToServerConnection(int serverA, int serverB){
+        if(disabledServerToServerChannels == null)
+            disabledServerToServerChannels = new HashMap<>();
+
         ArrayList<Integer> serverAChannels;
         ArrayList<Integer> serverBChannels;
         if(disabledServerToServerChannels.containsKey(serverA))
@@ -115,6 +118,9 @@ public class Proxy {
     }
 
     public static void disableServerToClientConnection(int server, int client){
+        if(disabledServerToClientChannels == null)
+            disabledServerToServerChannels = new HashMap<>();
+        
         ArrayList<Integer> serverChannels;
 
         if(disabledServerToClientChannels.containsKey(server))
