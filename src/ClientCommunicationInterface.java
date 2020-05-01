@@ -38,6 +38,9 @@ public class ClientCommunicationInterface implements Runnable {
                 if(message == null)
                     continue;
 
+                if(message instanceof ClientMessage)
+                    System.out.println(((ClientMessage) message).message);
+
             } catch (IOException | ClassNotFoundException e) {
                 continue;
             }
