@@ -119,7 +119,7 @@ public class Client {
     }
 
     synchronized private void sendRelease() throws IOException {
-        for(Integer server: serversLocked){
+        for(Integer server: serversResponded){
             communicationInterface.sendRelease(new ReleaseMessage(clientId, server, fileId, requestNum));
         }
     }
