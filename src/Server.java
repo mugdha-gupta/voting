@@ -134,6 +134,9 @@ public class Server {
     }
 
     synchronized public void release(ReleaseMessage message) throws IOException {
+        if(currentRequestMessage.get(message.fileId).requestNum != message.requestNum ||
+                fileToVoteCastClient.get(message.fileId) != message.clientId)
+            return;
         cleanup(message.fileId);
         castVote(message.fileId);
     }

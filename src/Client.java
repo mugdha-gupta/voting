@@ -85,7 +85,7 @@ public class Client {
             System.out.println("waiting for resource");
             waitForGrant();
         }
-        
+
         System.out.println("done " + done);
         while (done.getCount() > 0){
             Thread.sleep(2000);
@@ -120,7 +120,7 @@ public class Client {
 
     synchronized private void sendRelease() throws IOException {
         for(Integer server: serversLocked){
-            communicationInterface.sendRelease(new ReleaseMessage(clientId, server, fileId));
+            communicationInterface.sendRelease(new ReleaseMessage(clientId, server, fileId, requestNum));
         }
     }
 
