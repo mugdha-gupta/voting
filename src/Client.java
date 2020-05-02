@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
 public class Client {
     static Client client;
@@ -15,7 +16,7 @@ public class Client {
     HashSet<Integer> serversResponded;
     int server1;
     int fileId;
-    int done;
+    CountDownLatch done;
     boolean inCS;
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -86,7 +87,7 @@ public class Client {
             waitForGrant();
         }
         System.out.println("done " + done);
-        while (done < serversResponded.size()){
+        while (done.getCount() > 0){
             Thread.sleep(2000);
             System.out.println("done " + done);
         }
@@ -114,7 +115,6 @@ public class Client {
         serversResponded.clear();
         server1 = 0;
         fileId = 0;
-        done = 0;
         inCS = false;
     }
 
@@ -129,6 +129,7 @@ public class Client {
             for(Integer server : serversResponded){
                 communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
             }
+            done = new CountDownLatch(serversResponded.size());
             inCS = true;
         }
 
@@ -191,9 +192,5 @@ public class Client {
             System.out.println("error: fails and votes != 3");
         }
 
-    }
-
-    public void done(DoneMessage message){
-        done++;
     }
 }

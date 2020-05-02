@@ -54,7 +54,7 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             System.out.println("received done from server "+ message.serverId);
             if(requestNum > message.requestNum)
                 return;
-            client.done(message);
+            client.done.countDown();
         }
 
         if(client.getNumResponded() >= 3){
