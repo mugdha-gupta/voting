@@ -38,12 +38,6 @@ public class Proxy {
             clientPool.execute(runnable);
         }
 
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        if(input.equals("part")){
-            System.out.println("hi");
-            disableConnections();
-        }
 
 
     }
