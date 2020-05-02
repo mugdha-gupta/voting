@@ -42,6 +42,7 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
                 return;
             if(requestNum > message.requestMessage.requestNum)
                 return;
+
             client.addInquireMessage(message);
             try {
                 client.handleInquires();

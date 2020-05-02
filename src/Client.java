@@ -177,7 +177,7 @@ public class Client {
         return serversResponded.size();
     }
 
-    synchronized public void addInquireMessage(InquireMessage message) {
+    public void addInquireMessage(InquireMessage message) {
         inquireMessages.add(message);
     }
 
