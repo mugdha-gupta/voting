@@ -19,36 +19,6 @@ public class Proxy {
         serverConnections = new HashMap<>();
         clientConnections = new HashMap<>();
 
-        for(int serverId = 1; serverId <= Util.NUM_SERVERS; serverId++){
-            serverConnections.put(serverId, new ProxyCommunicationInterface(true, serverId));
-        }
-
-        for(int clientId = 1; clientId <= Util.NUM_CLIENTS; clientId++){
-            clientConnections.put(clientId, new ProxyCommunicationInterface(false, clientId));
-        }
-
-        ExecutorService serverPool = Executors.newFixedThreadPool(7);
-        for (ProxyCommunicationInterface runnable: serverConnections.values()
-        ) {
-            serverPool.execute(runnable);
-        }
-
-        ExecutorService clientPool = Executors.newFixedThreadPool(5);
-        for (ProxyCommunicationInterface runnable: clientConnections.values()
-        ) {
-            clientPool.execute(runnable);
-        }
-
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        if(input.equals("part")){
-            partition();
-        }
-
-
-    }
-
-    private static void partition() {
         Scanner in = new Scanner(System.in);
         System.out.println("how many partitions will there be?");
         int numPart = in.nextInt();
@@ -76,6 +46,26 @@ public class Proxy {
         System.out.println(partitionToClient.toString());
         System.out.println(partitionToServer.toString());
 
+        for(int serverId = 1; serverId <= Util.NUM_SERVERS; serverId++){
+            serverConnections.put(serverId, new ProxyCommunicationInterface(true, serverId));
+        }
+
+        for(int clientId = 1; clientId <= Util.NUM_CLIENTS; clientId++){
+            clientConnections.put(clientId, new ProxyCommunicationInterface(false, clientId));
+        }
+
+        ExecutorService serverPool = Executors.newFixedThreadPool(7);
+        for (ProxyCommunicationInterface runnable: serverConnections.values()
+        ) {
+            serverPool.execute(runnable);
+        }
+
+        ExecutorService clientPool = Executors.newFixedThreadPool(5);
+        for (ProxyCommunicationInterface runnable: clientConnections.values()
+        ) {
+            clientPool.execute(runnable);
+        }
+
         for(Integer part1 : partitionToServer.keySet()){
             for(Integer part2 : partitionToServer.keySet()){
                 if(part1 < part2){
@@ -101,6 +91,19 @@ public class Proxy {
                 }
             }
         }
+
+//        Scanner scanner = new Scanner(System.in);
+//        String input = scanner.nextLine();
+//        if(input.equals("part")){
+//            partition();
+//        }
+
+
+    }
+
+    private static void partition() {
+
+
 
     }
 
