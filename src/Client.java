@@ -16,6 +16,7 @@ public class Client {
     int server1;
     int fileId;
     int done;
+    boolean inCS;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         if(args.length != 1)
@@ -37,6 +38,7 @@ public class Client {
         server1 =0;
         fileId = 0;
         done = 0;
+        inCS =false;
 
         Thread thread = new Thread(communicationInterface);
         thread.start();
@@ -87,6 +89,7 @@ public class Client {
         server1 = 0;
         fileId = 0;
         done = 0;
+        inCS = false;
     }
 
     synchronized private void sendRelease() throws IOException {
@@ -96,11 +99,12 @@ public class Client {
     }
 
     synchronized public void enterCS() throws IOException {
-        if(votesReceived >= 2){
+        if(votesReceived >= 2 && !inCS){
             for(Integer server : serversLocked){
                 communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
             }
         }
+        inCS = true;
     }
 
     synchronized void addReply(int serverId){
