@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -38,8 +39,42 @@ public class Proxy {
             clientPool.execute(runnable);
         }
 
-        disableConnections();
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        if(input.equals("part")){
+            partition();
+        }
 
+
+    }
+
+    private static void partition() {
+        Scanner in = new Scanner(System.in);
+        System.out.println("how many partitions will there be?");
+        int numPart = in.nextInt();
+        HashMap<Integer, HashSet<Integer>> partitionToServer = new HashMap<>();
+        HashMap<Integer, HashSet<Integer>> partitionToClient = new HashMap<>();
+        for(int i = 0 ; i < numPart; i++){
+            partitionToClient.put(i+1, new HashSet<>());
+            partitionToServer.put(i+1, new HashSet<>());
+        }
+
+        System.out.println("enter server partition data");
+        for(int i = 0; i < Util.NUM_SERVERS; i++){
+            int server = i+1;
+            int partition = in.nextInt();
+            partitionToServer.get(partition).add(server);
+        }
+
+        System.out.println("enter client paritition data");
+        for(int i = 0; i < Util.NUM_CLIENTS; i++){
+            int client = i+1;
+            int partition = in.nextInt();
+            partitionToClient.get(partition).add(client);
+        }
+
+        System.out.println(partitionToClient.toString());
+        System.out.println(partitionToServer.toString());
 
     }
 
