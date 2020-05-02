@@ -53,8 +53,8 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
 
         if(client.getNumResponded() == 3){
             try {
-                client.enterCS();
                 client.handleInquires();
+                client.enterCS();
             } catch (IOException e) {
                 e.printStackTrace();
             }

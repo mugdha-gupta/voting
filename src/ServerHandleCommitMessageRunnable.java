@@ -12,6 +12,8 @@ public class ServerHandleCommitMessageRunnable implements Runnable {
     @Override
     public void run() {
         try {
+            System.out.println("received a commit message" +
+                    "");
             server.commit(message);
         } catch (IOException e) {
             e.printStackTrace();

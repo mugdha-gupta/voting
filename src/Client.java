@@ -99,6 +99,7 @@ public class Client {
         long start = System.currentTimeMillis();
         while(!finished){
             if(votesReceived >= 2 && !inCS){
+
                 finished = true;
                 for(Integer server : serversResponded){
                     communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));

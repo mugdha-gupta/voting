@@ -12,6 +12,7 @@ public class ServerHandleYieldMessageRunnable implements Runnable {
     @Override
     public void run() {
         try {
+            System.out.println("yield received");
             server.receiveYield(message);
         } catch (IOException e) {
             e.printStackTrace();
