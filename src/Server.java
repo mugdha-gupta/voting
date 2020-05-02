@@ -106,6 +106,8 @@ public class Server {
         if(currentRequestMessage == null)
             currentRequestMessage = new HashMap<>();
         RequestMessage requestMessage = requestQueue.get(fileId).poll();
+        if(requestMessage == null)
+            return;
         fileToVoteCastClient.put(requestMessage.objectToEditId, requestMessage.clientId);
         currentRequestMessage.put(requestMessage.objectToEditId, requestMessage);
         communicationInterface.sendMessage(new ReplyMessage(serverId, requestMessage.clientId, requestMessage));

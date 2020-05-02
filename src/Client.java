@@ -44,10 +44,9 @@ public class Client {
         thread.start();
 
         for(int i = 0 ; i < 5 ; i++){
-        if(clientId == 1 || clientId == 2){
             requestNum++;
             fileId = generateRequestId();
-            requestMessage();}
+            requestMessage();
         }
     }
 
