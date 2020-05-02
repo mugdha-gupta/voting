@@ -70,21 +70,31 @@ public class Server {
     synchronized public void receiveRequest(RequestMessage requestMessage) throws IOException {
         //we must queue the request
         queueRequest(requestMessage);
-
+        System.out.println("message queued " + requestQueue.get(requestMessage.objectToEditId).toString());
         if(replySentForFile(requestMessage.objectToEditId)){
             int clientReplied = getClientThatReceivedVote(requestMessage.objectToEditId);
             if(clientReplied < requestMessage.clientId) // send a failed message to the client
+            {
                 communicationInterface.sendMessage(new FailedMessage(serverId, requestMessage));
+                System.out.println("failed sent to client " + requestMessage.clientId );
+            }
             //else if we have sent it to a client with a lower priority
             else if(clientReplied > requestMessage.clientId) // send an inquire to the client we have sent a reply to{
+            {
                 communicationInterface.sendMessage(new InquireMessage(serverId, clientReplied, requestMessage));
-            else
+                System.out.println("inquire sent to client " + clientReplied);
+            }
+            else {
                 System.out.println("error: two requests from same client");
+            }
+
         }
 
         //if we haven't sent a reply, set reply sent for this file to the client you are sending the reply to
-        else
+        else{
             castVote(requestMessage.objectToEditId);
+            System.out.println("casting vote ");
+        }
 
 
     }
