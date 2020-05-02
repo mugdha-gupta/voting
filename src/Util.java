@@ -59,7 +59,9 @@ public class Util {
     }
 
     static int hash(int id){
-        return (id%NUM_SERVERS) + 1 ;
+        int ret = id%NUM_SERVERS;
+        ret = (ret==0)? NUM_SERVERS : ret;
+        return ret;
     }
 
 }
