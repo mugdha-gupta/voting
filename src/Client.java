@@ -95,15 +95,19 @@ public class Client {
     }
 
     synchronized public void enterCS() throws IOException {
-        if(votesReceived >= 2 && !inCS){
-            for(Integer server : serversLocked){
-                communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
-            }
-            inCS = true;
-            while (done < votesReceived){
+        boolean finished = false;
+        while(!finished){
+            if(votesReceived >= 2 && !inCS){
+                finished = true;
+                for(Integer server : serversLocked){
+                    communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
+                }
+                inCS = true;
+                while (done < votesReceived){
 
+                }
+                cleanup();
             }
-            cleanup();
         }
     }
 

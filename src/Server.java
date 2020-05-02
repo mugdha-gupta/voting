@@ -118,7 +118,7 @@ public class Server {
         }
         if(message == null)
             System.out.println("not possible");
-        
+
         System.out.println("starting commit to file " + message.fileId);
 
         if(current.requestNum == message.requestNum &&
