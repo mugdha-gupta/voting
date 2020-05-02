@@ -76,6 +76,32 @@ public class Proxy {
         System.out.println(partitionToClient.toString());
         System.out.println(partitionToServer.toString());
 
+        for(Integer part1 : partitionToServer.keySet()){
+            for(Integer part2 : partitionToServer.keySet()){
+                if(part1 < part2){
+                    for (Integer server : partitionToServer.get(part1)) {
+                        for(Integer server2 : partitionToServer.get(part2)){
+                            System.out.println("disabling server " + server + " to server " + server2);
+                            disableServerToServerConnection(server, server2);
+                        }
+                    }
+                }
+            }
+        }
+
+        for(Integer part1 : partitionToServer.keySet()){
+            for(Integer part2 : partitionToClient.keySet()){
+                if(part1 != part2){
+                    for(Integer server: partitionToServer.get(part1)){
+                        for(Integer client : partitionToClient.get(part2)){
+                            System.out.println("disabliang server " + server + " to client " + client );
+                            disableServerToClientConnection(server, client);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     private static void disableConnections() {
@@ -174,22 +200,18 @@ public class Proxy {
     public static  boolean sendServerToClientMessage(ReplyMessage replyMessage) throws IOException {
         if(disabledServerToClientChannels.containsKey(replyMessage.serverId) &&
                 disabledServerToServerChannels.get(replyMessage.serverId).contains(replyMessage.clientId)){
-            System.out.println("unable to forward reply message");
             return false;
         }
         clientConnections.get(replyMessage.clientId).sendMessage(replyMessage);
-        System.out.println("proxy has forwarded reply message");
         return true;
     }
 
     public static  boolean sendServerToClientMessage(WaitMessage replyMessage) throws IOException {
         if(disabledServerToClientChannels.containsKey(replyMessage.serverId) &&
                 disabledServerToServerChannels.get(replyMessage.serverId).contains(replyMessage.clientId)){
-//            System.out.println("unable to forward reply message");
             return false;
         }
         clientConnections.get(replyMessage.clientId).sendMessage(replyMessage);
-//        System.out.println("proxy has forwarded reply message");
         return true;
     }
 
@@ -217,17 +239,6 @@ public class Proxy {
         return true;
     }
 
-//    public static  boolean sendClientToServerMessage(int clientId, int serverId, MyMessage myMessage) throws IOException {
-//        if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToClientChannels.get(serverId).contains(clientId))
-//        {
-//            System.out.println("blocked message from client " + clientId + " to server " + serverId);
-//
-//            return false;
-//        }
-//        System.out.println("delivering message from client " + clientId + " to server " + serverId);
-//        serverConnections.get(serverId).sendMessage(myMessage);
-//        return true;
-//    }
 
     public static boolean sendClientRequestToServerMessage(RequestMessage message) throws IOException {
         int server = message.serverId;
@@ -236,7 +247,7 @@ public class Proxy {
                 disabledServerToClientChannels.get(server).contains(client)){
             return false;
         }
-        System.out.println("attempting to get " + server + " connectionz");
+
         serverConnections.get(server).sendMessage(message);
         return true;
     }
