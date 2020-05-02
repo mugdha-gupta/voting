@@ -72,6 +72,7 @@ public class Client {
         enterCS();
 
         while(done < votesReceived){
+            System.out.println("stuck");
         }
 
         cleanup();
