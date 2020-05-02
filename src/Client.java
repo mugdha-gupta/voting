@@ -57,10 +57,10 @@ public class Client {
                 new RequestMessage(clientId, fileId, server1, requestNum, message)
         );
         communicationInterface.sendRequest(
-                new RequestMessage(clientId, fileId, (server1+1)%7 , requestNum, message)
+                new RequestMessage(clientId, fileId, Util.getServer2(server1) , requestNum, message)
         );
         communicationInterface.sendRequest(
-                new RequestMessage(clientId, fileId, (server1+2)%7, requestNum, message)
+                new RequestMessage(clientId, fileId, Util.getServer3(server1), requestNum, message)
         );
 
         long start = System.currentTimeMillis();

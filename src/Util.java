@@ -60,8 +60,23 @@ public class Util {
 
     static int hash(int id){
         int ret = id%NUM_SERVERS;
-        ret = (ret==0)? NUM_SERVERS : ret;
-        return ret;
+        return ret+1;
+    }
+
+    static int getServer2(int id){
+        int ret = (id+1)%NUM_SERVERS;
+        if(ret == 0)
+            return NUM_SERVERS;
+        else
+            return ret;
+    }
+
+    static int getServer3(int id){
+        int ret = (id+2)%NUM_SERVERS;
+        if(ret == 0)
+            return NUM_SERVERS;
+        else
+            return ret;
     }
 
 }
