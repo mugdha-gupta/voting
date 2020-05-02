@@ -59,16 +59,18 @@ public class Util {
     }
 
     static int hash(int id){
-        int ret = id%NUM_SERVERS;
-        return ret+1;
+        return 4;
+//        int ret = id%NUM_SERVERS;
+//        return ret+1;
     }
 
     static int getServer2(int id){
-        int ret = (id+1)%NUM_SERVERS;
-        if(ret == 0)
-            return NUM_SERVERS;
-        else
-            return ret;
+        return 4;
+//        int ret = (id+1)%NUM_SERVERS;
+//        if(ret == 0)
+//            return NUM_SERVERS;
+//        else
+//            return ret;
     }
 
     static int getServer3(int id){
