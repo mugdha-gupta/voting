@@ -112,7 +112,15 @@ public class Server {
 
     synchronized void commit(CommitMessage message) throws IOException {
         RequestMessage current = currentRequestMessage.get(message.fileId);
+        if(current == null){
+            System.out.println("message is not store in current queue");
+            return;
+        }
+        if(message == null)
+            System.out.println("not possible");
+        
         System.out.println("starting commit to file " + message.fileId);
+
         if(current.requestNum == message.requestNum &&
             message.clientId == getClientThatReceivedVote(message.fileId)){
             System.out.println("correct file in commit message");
