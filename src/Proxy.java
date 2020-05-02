@@ -61,6 +61,7 @@ public class Proxy {
 
         }
         System.out.println("received all parition acknowledements");
+        System.out.println("countdown at " + partitionReceived.getCount());
         for(ProxyCommunicationInterface runnable : serverConnections.values()){
             runnable.sendMessage(new PartitionMessage());
         }
