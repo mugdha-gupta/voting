@@ -145,7 +145,7 @@ public class Client {
     }
 
     synchronized public void handleInquires() throws IOException {
-        if(inquireMessages.isEmpty())
+        if(inquireMessages == null || inquireMessages.isEmpty())
             return;
         else if(numFails >= 2) {
             for (InquireMessage message : inquireMessages) {
