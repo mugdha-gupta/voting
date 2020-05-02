@@ -18,6 +18,8 @@ public class Client {
     int fileId;
     CountDownLatch done;
     boolean inCS;
+    boolean inquireReceived;
+    boolean yieldSent;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         if(args.length != 1)
@@ -179,7 +181,7 @@ public class Client {
         inquireMessages.add(message);
     }
 
-    synchronized public void handleInquires() throws IOException {
+    public void handleInquires() throws IOException {
         System.out.println("checking inquires");
         if(inquireMessages == null || inquireMessages.isEmpty())
             return;

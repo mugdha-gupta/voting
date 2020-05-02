@@ -43,6 +43,11 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             if(requestNum > message.requestMessage.requestNum)
                 return;
             client.addInquireMessage(message);
+            try {
+                client.handleInquires();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         if(returnMessage instanceof WaitMessage){
@@ -62,13 +67,7 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             return;
         }
 
-        if(client.getNumResponded() >= 3){
-            try {
-                client.handleInquires();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
 
     }
 
