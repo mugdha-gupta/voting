@@ -94,9 +94,10 @@ public class Client {
         cleanup();
     }
 
-    private void waitForGrant() throws IOException {
+    private void waitForGrant() throws IOException, InterruptedException {
         System.out.println("waiting for Grant");
         while(votesReceived < 2 && !inCS){
+            Thread.sleep(3000);
             System.out.println("still waiting " + votesReceived);
 
         }
