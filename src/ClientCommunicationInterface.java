@@ -28,22 +28,21 @@ public class ClientCommunicationInterface implements Runnable {
 
     synchronized void sendRequest(RequestMessage requestMessage) throws IOException {
         out.writeObject(requestMessage);
-        System.out.println("sent request to server " + requestMessage.serverId);
     }
 
     synchronized void sendRelease(ReleaseMessage message) throws IOException {
         out.writeObject(message);
-        System.out.println("sent release");
     }
 
     synchronized  void sendMessage(YieldMessage yieldMessage) throws  IOException {
         out.writeObject(yieldMessage);
-        System.out.println("send yield");
     }
 
     synchronized void sendCommitMessage(CommitMessage commitMessage) throws IOException{
         out.writeObject(commitMessage);
-        System.out.println("send commit");
+    }
+    synchronized void sendAcknowledgement(AcknowledgementMessage message) throws IOException{
+        out.writeObject(message);
     }
 
     //close streams

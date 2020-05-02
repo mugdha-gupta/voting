@@ -159,7 +159,12 @@ public class Server {
         castVote(message.fileId);
     }
 
-    synchronized private void cleanup(int fileId) {
+    synchronized public void cleanup(int fileId) {
+        if(fileId == -1){
+            fileToVoteCastClient.clear();
+            currentRequestMessage.clear();
+            requestQueue.clear();
+        }
         fileToVoteCastClient.remove(fileId);
         currentRequestMessage.remove(fileId);
 

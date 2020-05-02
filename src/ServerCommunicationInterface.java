@@ -76,6 +76,10 @@ public class ServerCommunicationInterface implements Runnable {
                     serverHandleIncomingMessages.execute(new ServerHandleReleaseMessageRunnable(server, (ReleaseMessage)message));
                 }
 
+                if(message instanceof PartitionMessage){
+                    server.cleanup(-1);
+                }
+
             } catch (IOException | ClassNotFoundException e) {
                 continue;
             }

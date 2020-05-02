@@ -18,8 +18,7 @@ public class Client {
     int fileId;
     CountDownLatch done;
     boolean inCS;
-    boolean inquireReceived;
-    boolean yieldSent;
+    boolean partitioned;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         if(args.length != 1)
@@ -41,18 +40,22 @@ public class Client {
         server1 =0;
         fileId = 0;
         inCS =false;
+        partitioned = false;
 
         Thread thread = new Thread(communicationInterface);
         thread.start();
-        for(int i = 0 ; i < 5 ; i++){
+        while(!partitioned){
             requestNum++;
             fileId = generateRequestId();
             requestMessage();
         }
-    }
-
-    synchronized private void readFileContents(int fileId){
-        //TODO: implement
+        communicationInterface.sendAcknowledgement(new AcknowledgementMessage());
+        System.out.println("sent acknowledgement");
+        for(int i = 0 ;i < 5; i++){
+            requestNum++;
+            fileId = generateRequestId();
+            requestMessage();
+        }
     }
 
     private void requestMessage() throws IOException, InterruptedException {
@@ -205,5 +208,9 @@ public class Client {
             System.out.println("error: fails and votes != 3");
         }
 
+    }
+
+    public void partition() {
+        partitioned = true;
     }
 }

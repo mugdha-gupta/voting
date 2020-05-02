@@ -108,5 +108,9 @@ public class HandleIncomingProxyMessage implements  Runnable {
             }
         }
 
+        if(message instanceof AcknowledgementMessage){
+            Proxy.partitionReceived.countDown();
+        }
+
     }
 }

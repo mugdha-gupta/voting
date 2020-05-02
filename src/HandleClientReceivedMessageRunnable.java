@@ -53,7 +53,6 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
 
         if(returnMessage instanceof WaitMessage){
             WaitMessage message = (WaitMessage) returnMessage;
-            System.out.println("received wati from " + message.serverId);
             if(requestNum > message.requestNum)
                 return;
             client.addReply(message.serverId);
@@ -61,10 +60,14 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
         }
         if(returnMessage instanceof DoneMessage){
             DoneMessage message = (DoneMessage)returnMessage;
-            System.out.println("received done from server "+ message.serverId);
             if(requestNum > message.requestNum)
                 return;
             client.done.countDown();
+            return;
+        }
+
+        if(returnMessage instanceof PartitionMessage){
+            client.partition();
             return;
         }
 
