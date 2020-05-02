@@ -51,6 +51,10 @@ public class Client {
         }
     }
 
+    synchronized private void readFileContents(int fileId){
+        //TODO: implement
+    }
+
     private void requestMessage() throws IOException, InterruptedException {
         server1 = Util.hash(fileId);
         String message = "client " + clientId + "fileid "+ fileId + " request number " + requestNum;
@@ -75,6 +79,8 @@ public class Client {
             System.out.println("partitioned");
             if(getNumResponded() < 2){
                 //operation failed, move on
+                System.out.println("write for file object number " + fileId + " cannot be performed " +
+                        "because the appropriate servers aren't accessible");
             }
             else //we have access to two servers
                 waitForGrant();
@@ -166,11 +172,6 @@ public class Client {
     synchronized public void incrementFailsReceived() {
         numFails++;
     }
-
-    synchronized public int getNumFails() {
-        return numFails;
-    }
-
 
     synchronized public int getNumResponded() {
         return serversResponded.size();

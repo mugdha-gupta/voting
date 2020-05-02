@@ -38,6 +38,7 @@ public class Proxy {
             clientPool.execute(runnable);
         }
 
+        disableConnections();
 
 
     }
