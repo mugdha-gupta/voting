@@ -43,6 +43,8 @@ public class Proxy {
             clientPool.execute(runnable);
         }
 
+        partitionReceived = new CountDownLatch(clientConnections.size());
+
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine();
         if(input.equals("part")){
