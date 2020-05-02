@@ -85,9 +85,10 @@ public class Client {
             System.out.println("waiting for resource");
             waitForGrant();
         }
-
+        System.out.println("done " + done);
         while (done < serversResponded.size()){
-
+            Thread.sleep(2000);
+            System.out.println("done " + done);
         }
         cleanup();
     }
