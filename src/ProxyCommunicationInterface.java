@@ -42,6 +42,7 @@ public class ProxyCommunicationInterface implements Runnable {
         out.writeObject(failedMessage);
     }
     synchronized public void sendMessage(ReplyMessage myMessage) throws IOException {
+        System.out.println("reply message written to output stream " + id);
         out.writeObject(myMessage);
     }
     synchronized public void sendMessage(InquireMessage inquireMessage) throws IOException {
