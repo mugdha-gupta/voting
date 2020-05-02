@@ -71,7 +71,7 @@ public class Client {
         System.out.println("servers responded number " + getNumResponded());
         enterCS();
 
-        while(done != votesReceived){
+        while(done < votesReceived){
         }
 
         cleanup();
