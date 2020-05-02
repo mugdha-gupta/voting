@@ -47,6 +47,8 @@ public class Server {
 
     synchronized public void queueRequest(RequestMessage requestMessage) {
         PriorityQueue<RequestMessage> queue = null;
+        if(requestQueue == null)
+            requestQueue = new HashMap<>();
         if(requestQueue.containsKey(requestMessage.objectToEditId))
             queue = requestQueue.get(requestMessage.objectToEditId);
         if(queue == null)
