@@ -180,9 +180,11 @@ public class Client {
     }
 
     synchronized public void handleInquires() throws IOException {
+        System.out.println("checking inquires");
         if(inquireMessages == null || inquireMessages.isEmpty())
             return;
-        else if(numFails >= 2) {
+
+        if(numFails >= 2) {
             for (InquireMessage message : inquireMessages) {
                 if(message.requestMessage.requestNum < requestNum)
                     continue;

@@ -22,6 +22,7 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
                 return;
             client.incrementVotesReceived(message.serverId);
             client.addReply(message.requestMessage.serverId);
+            return;
         }
 
         if(returnMessage instanceof FailedMessage){
@@ -68,13 +69,6 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
                 e.printStackTrace();
             }
         }
-
-
-            try {
-                client.enterCS();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
     }
 
