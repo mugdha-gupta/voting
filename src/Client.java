@@ -85,6 +85,10 @@ public class Client {
             System.out.println("waiting for resource");
             waitForGrant();
         }
+
+        while (done < serversResponded.size()){
+
+        }
         cleanup();
     }
 
@@ -125,9 +129,6 @@ public class Client {
                 communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
             }
             inCS = true;
-            while (done < serversResponded.size()){
-
-            }
         }
 
     }
