@@ -99,7 +99,7 @@ public class Client {
         while(!finished){
             if(votesReceived >= 2 && !inCS){
                 finished = true;
-                for(Integer server : serversLocked){
+                for(Integer server : serversResponded){
                     communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
                 }
                 inCS = true;
