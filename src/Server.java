@@ -30,7 +30,8 @@ public class Server {
         server = this;
         this.serverId = serverId;
         communicationInterface = new ServerCommunicationInterface(server);
-        communicationInterface.run();
+        Thread t = new Thread(communicationInterface);
+        t.start();
         fileToVoteCastClient = new HashMap<>();
         requestQueue = new HashMap<>();
         currentRequestMessage = new HashMap<>();

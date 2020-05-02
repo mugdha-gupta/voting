@@ -38,7 +38,8 @@ public class Client {
         fileId = 0;
         done = 0;
 
-        communicationInterface.run();
+        Thread thread = new Thread(communicationInterface);
+        thread.start();
 
        // while (true){
         if(clientId == 1){
