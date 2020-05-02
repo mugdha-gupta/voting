@@ -59,7 +59,7 @@ public class Util {
     }
 
     static int hash(int id){
-        return id%NUM_SERVERS;
+        return (id%NUM_SERVERS) + 1 ;
     }
 
 }
