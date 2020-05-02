@@ -81,6 +81,7 @@ public class Client {
                 //operation failed, move on
                 System.out.println("write for file object number " + fileId + " cannot be performed " +
                         "because the appropriate servers aren't accessible");
+                cleanup();
                 return;
             }
             else //we have access to two servers

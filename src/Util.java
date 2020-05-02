@@ -21,8 +21,7 @@ public class Util {
     static final int CLIENT_PROXY_LISTENING_PORT = 14000;
 
     //timeout
-    static final int TIMEOUT_THRESHOLD = 30000;//we will wait 5 at most
-    static final int PARTITION_THRESHOLD = 30000;//we will wait 5 at most
+    static final int TIMEOUT_THRESHOLD = 10000;//we will wait 5 at most
 
     //returns the socket to the proxy for the server
     static Socket getProxyServerSocket() throws IOException {
