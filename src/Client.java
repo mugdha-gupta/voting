@@ -210,7 +210,9 @@ public class Client {
 
     }
 
-    public void partition() {
+    synchronized public void partition() {
+        System.out.println("sent partition to true");
+
         partitioned = true;
     }
 }
