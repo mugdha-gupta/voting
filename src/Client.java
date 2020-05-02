@@ -111,7 +111,7 @@ public class Client {
     }
 
     synchronized int getRequestNum(){
-        return getRequestNum();
+        return requestNum;
     }
 
     private int generateRequestId() {
