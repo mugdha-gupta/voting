@@ -96,6 +96,7 @@ public class Client {
 
     synchronized public void enterCS() throws IOException {
         boolean finished = false;
+        long start = System.currentTimeMillis();
         while(!finished){
             if(votesReceived >= 2 && !inCS){
                 finished = true;
@@ -106,9 +107,13 @@ public class Client {
                 while (done < votesReceived){
 
                 }
-                cleanup();
+            }
+            if((System.currentTimeMillis() - start) > Util.PARTITION_THRESHOLD && getNumResponded() < 3) {
+                break;
             }
         }
+        cleanup();
+
     }
 
     synchronized void addReply(int serverId){
