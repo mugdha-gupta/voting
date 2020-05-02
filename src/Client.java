@@ -69,6 +69,8 @@ public class Client {
     }
 
     synchronized private void cleanup() throws IOException {
+        if(inquireMessages == null)
+            inquireMessages = new ArrayList<>();
         sendRelease();
         votesReceived = 0;
         numFails = 0;

@@ -38,6 +38,8 @@ public class Server {
     }
 
     synchronized public boolean replySentForFile(int fileId){
+        if(fileToVoteCastClient == null)
+            fileToVoteCastClient = new HashMap<>();
         return fileToVoteCastClient.containsKey(fileId);
     }
 

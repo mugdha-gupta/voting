@@ -186,7 +186,7 @@ public class Proxy {
                 disabledServerToClientChannels.get(server).contains(client)){
             return false;
         }
-
+        System.out.println("attempting to get " + server + " connectionz");
         serverConnections.get(server).sendMessage(message);
         return true;
     }
