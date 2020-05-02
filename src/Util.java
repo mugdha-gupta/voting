@@ -65,7 +65,7 @@ public class Util {
     }
 
     static int getServer2(int id){
-        return 4;
+        return 5;
 //        int ret = (id+1)%NUM_SERVERS;
 //        if(ret == 0)
 //            return NUM_SERVERS;
@@ -74,7 +74,7 @@ public class Util {
     }
 
     static int getServer3(int id){
-        return 4;
+        return 6;
 //        int ret = (id+2)%NUM_SERVERS;
 //        if(ret == 0)
 //            return NUM_SERVERS;

@@ -28,7 +28,7 @@ public class ClientCommunicationInterface implements Runnable {
 
     synchronized void sendRequest(RequestMessage requestMessage) throws IOException {
         out.writeObject(requestMessage);
-        System.out.println("sent request");
+        System.out.println("sent request to server " + requestMessage.serverId);
     }
 
     synchronized void sendRelease(ReleaseMessage message) throws IOException {

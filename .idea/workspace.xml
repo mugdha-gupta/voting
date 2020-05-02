@@ -30,6 +30,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -104,7 +105,7 @@
       <workItem from="1588001234643" duration="7307000" />
       <workItem from="1588186904307" duration="5000" />
       <workItem from="1588333139543" duration="11731000" />
-      <workItem from="1588354446412" duration="37701000" />
+      <workItem from="1588354446412" duration="38318000" />
     </task>
     <servers />
   </component>
