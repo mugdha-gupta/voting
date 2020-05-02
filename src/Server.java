@@ -147,6 +147,8 @@ public class Server {
         files.get(message.fileId).commit(toCommit.message);
         System.out.println(" commit complete ");
 
+        requestQueue.get(message.fileId).remove(toCommit);
+
     }
 
     synchronized public void release(ReleaseMessage message) throws IOException {
