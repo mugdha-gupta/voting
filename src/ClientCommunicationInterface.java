@@ -61,6 +61,7 @@ public class ClientCommunicationInterface implements Runnable {
         while (true){
             try {
                 object = in.readObject();
+                System.out.println("reading messages");
                 if(object == null)
                     continue;
                 System.out.println("received a message and calling runnalbe");
