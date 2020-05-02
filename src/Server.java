@@ -156,6 +156,7 @@ public class Server {
                 fileToVoteCastClient.get(message.fileId) != message.clientId)
             return;
         cleanup(message.fileId);
+        System.out.println("going to next request");
         castVote(message.fileId);
     }
 
