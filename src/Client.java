@@ -51,6 +51,10 @@ public class Client {
         }
         communicationInterface.sendAcknowledgement(new AcknowledgementMessage());
         System.out.println("sent acknowledgement");
+        while (partitioned){
+
+        }
+        System.out.println("resuming requests");
         for(int i = 0 ;i < 5; i++){
             requestNum++;
             fileId = generateRequestId();
@@ -212,7 +216,6 @@ public class Client {
 
     synchronized public void partition() {
         System.out.println("sent partition to true");
-
-        partitioned = true;
+        partitioned = !partitioned;
     }
 }
