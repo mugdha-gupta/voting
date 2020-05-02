@@ -70,6 +70,30 @@ public class Client {
         }
         System.out.println("servers responded number " + getNumResponded());
         enterCS();
+
+        if(!inCS && getNumResponded() < 3){
+            System.out.println("partitioned");
+            if(getNumResponded() < 2){
+                //operation failed, move on
+            }
+            else //we have access to two servers
+                waitForGrant();
+
+        }
+
+        else if(!inCS){
+            System.out.println("waiting for resource");
+            waitForGrant();
+        }
+    }
+
+    private void waitForGrant() throws IOException {
+        System.out.println("waiting for Grant");
+        while(votesReceived < 2){
+
+        }
+        System.out.println("RECEIVED GRANT");
+        enterCS();
     }
 
     synchronized private void cleanup() throws IOException {
@@ -95,25 +119,12 @@ public class Client {
     }
 
     synchronized public void enterCS() throws IOException {
-        boolean finished = false;
-        long start = System.currentTimeMillis();
-        while(!finished){
-            if(votesReceived >= 2 && !inCS){
-
-                finished = true;
-                for(Integer server : serversResponded){
-                    communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
-                }
-                inCS = true;
-                while (done < votesReceived){
-
-                }
+        if(votesReceived >= 2 && !inCS){
+            for(Integer server : serversResponded){
+                communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
             }
-            if((System.currentTimeMillis() - start) > Util.PARTITION_THRESHOLD && getNumResponded() < 3) {
-                break;
-            }
+            inCS = true;
         }
-        cleanup();
 
     }
 

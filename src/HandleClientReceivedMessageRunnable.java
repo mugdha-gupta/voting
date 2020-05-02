@@ -51,15 +51,21 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             client.done(message);
         }
 
-        if(client.getNumResponded() == 3){
+        if(client.getNumResponded() >= 3){
             try {
                 client.handleInquires();
-                client.enterCS();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
+        if(client.votesReceived >= 2){
+            try {
+                client.enterCS();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

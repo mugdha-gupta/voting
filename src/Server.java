@@ -132,6 +132,8 @@ public class Server {
             files.get(message.fileId).commit(current.message);
             System.out.println(" commit complete ");
         }
+        else
+            System.out.println("couldn't commit");
 
     }
 
