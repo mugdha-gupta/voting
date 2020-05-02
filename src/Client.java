@@ -97,6 +97,7 @@ public class Client {
     private void waitForGrant() throws IOException {
         System.out.println("waiting for Grant");
         while(votesReceived < 2 && !inCS){
+            System.out.println("still waiting " + votesReceived);
 
         }
         System.out.println("RECEIVED GRANT");
@@ -186,7 +187,7 @@ public class Client {
 
         if(numFails >= 2) {
             for (InquireMessage message : inquireMessages) {
-                if(message.requestMessage.requestNum < requestNum)
+                if(message.requestMessage.requestNum != requestNum)
                     continue;
                 communicationInterface.sendMessage(new YieldMessage(message.requestMessage));
             }
