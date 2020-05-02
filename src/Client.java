@@ -70,12 +70,6 @@ public class Client {
         }
         System.out.println("servers responded number " + getNumResponded());
         enterCS();
-
-        while(done < votesReceived){
-            System.out.println("stuck");
-        }
-
-        cleanup();
     }
 
     synchronized private void cleanup() throws IOException {
@@ -105,8 +99,12 @@ public class Client {
             for(Integer server : serversLocked){
                 communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
             }
+            inCS = true;
+            while (done < votesReceived){
+
+            }
+            cleanup();
         }
-        inCS = true;
     }
 
     synchronized void addReply(int serverId){
