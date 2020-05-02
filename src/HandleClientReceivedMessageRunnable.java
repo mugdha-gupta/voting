@@ -45,6 +45,7 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
 
         if(returnMessage instanceof WaitMessage){
             WaitMessage message = (WaitMessage) returnMessage;
+            System.out.println("received wati from " + message.serverId);
             if(requestNum > message.requestNum)
                 return;
             client.addReply(message.serverId);

@@ -38,7 +38,6 @@ public class Client {
         numFails = 0;
         server1 =0;
         fileId = 0;
-        done = 0;
         inCS =false;
 
         Thread thread = new Thread(communicationInterface);
@@ -86,6 +85,7 @@ public class Client {
             System.out.println("waiting for resource");
             waitForGrant();
         }
+        
         System.out.println("done " + done);
         while (done.getCount() > 0){
             Thread.sleep(2000);
@@ -125,6 +125,7 @@ public class Client {
     }
 
     synchronized public void enterCS() throws IOException {
+        System.out.println("entered CS");
         if(votesReceived >= 2 && !inCS){
             for(Integer server : serversResponded){
                 communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
@@ -132,6 +133,7 @@ public class Client {
             done = new CountDownLatch(serversResponded.size());
             inCS = true;
         }
+        System.out.println("exti CS");
 
     }
 
