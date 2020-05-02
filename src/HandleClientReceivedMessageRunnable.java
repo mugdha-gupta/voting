@@ -36,6 +36,8 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
         if(returnMessage instanceof InquireMessage){
             InquireMessage message = (InquireMessage)returnMessage;
             System.out.println("received inquire from server "+ message.serverId);
+            if(message.requestMessage == null)
+                return;
             if(requestNum > message.requestMessage.requestNum)
                 return;
             client.addInquireMessage(message);
