@@ -125,6 +125,9 @@ public class Client {
                 communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
             }
             inCS = true;
+            while (done < serversResponded.size()){
+                
+            }
         }
 
     }
