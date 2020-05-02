@@ -17,7 +17,6 @@ public class HandleIncomingProxyMessage implements  Runnable {
     public void run() {
         if(message instanceof  WaitMessage){
             WaitMessage mess = (WaitMessage) message;
-            System.out.println("sneding wiat message to " + mess.clientId);
             try {
                 Proxy.sendServerToClientMessage(mess);
             } catch (IOException e) {
@@ -28,7 +27,6 @@ public class HandleIncomingProxyMessage implements  Runnable {
         if(message instanceof  ReplyMessage){
 
             ReplyMessage mess= (ReplyMessage) message;
-            System.out.println("proxy received reply message from server " + mess.serverId + " to client " + mess.clientId);
             try {
                 Proxy.sendServerToClientMessage(mess);
             } catch (IOException e) {
