@@ -26,17 +26,21 @@ public class ServerCommunicationInterface implements Runnable {
     }
 
     synchronized void sendMessage(ReplyMessage replyMessage) throws IOException {
+        System.out.println("reply message sent");
         out.writeObject(replyMessage);
     }
     synchronized void sendMessage(DoneMessage message) throws IOException {
+        System.out.println("done messsage sent");
         out.writeObject(message);
     }
     synchronized void sendMessage(FailedMessage failedMessage) throws IOException {
+        System.out.println("failed message sent");
         out.writeObject(failedMessage);
     }
 
     synchronized void sendMessage(InquireMessage inquireMessage) throws IOException {
         out.writeObject(inquireMessage);
+        System.out.println("inquire emssage sent");
     }
     //we will listen for incoming messages when this runnable is executed
     @Override
