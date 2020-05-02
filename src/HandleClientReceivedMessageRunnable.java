@@ -31,6 +31,7 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
                 return;
             client.incrementFailsReceived();
             client.addReply(message.requestMessage.serverId);
+            return;
         }
 
         if(returnMessage instanceof InquireMessage){
@@ -49,6 +50,7 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             if(requestNum > message.requestNum)
                 return;
             client.addReply(message.serverId);
+            return;
         }
         if(returnMessage instanceof DoneMessage){
             DoneMessage message = (DoneMessage)returnMessage;
@@ -56,6 +58,7 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             if(requestNum > message.requestNum)
                 return;
             client.done.countDown();
+            return;
         }
 
         if(client.getNumResponded() >= 3){
@@ -66,13 +69,13 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             }
         }
 
-        if(client.votesReceived >= 2){
+
             try {
                 client.enterCS();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+
     }
 
 }

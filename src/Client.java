@@ -88,7 +88,7 @@ public class Client {
 
         System.out.println("done " + done);
         while (done.getCount() > 0){
-            Thread.sleep(2000);
+            Thread.sleep(1000);
             System.out.println("done " + done);
         }
         cleanup();
@@ -96,7 +96,7 @@ public class Client {
 
     private void waitForGrant() throws IOException {
         System.out.println("waiting for Grant");
-        while(votesReceived < 2){
+        while(votesReceived < 2 && !inCS){
 
         }
         System.out.println("RECEIVED GRANT");
@@ -125,15 +125,15 @@ public class Client {
     }
 
     synchronized public void enterCS() throws IOException {
-        System.out.println("entered CS");
         if(votesReceived >= 2 && !inCS){
+            System.out.println("entered CS");
             for(Integer server : serversResponded){
                 communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
             }
             done = new CountDownLatch(serversResponded.size());
             inCS = true;
+            System.out.println("exiting CS");
         }
-        System.out.println("exti CS");
 
     }
 
