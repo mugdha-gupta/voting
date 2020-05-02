@@ -110,13 +110,17 @@ public class Server {
 
     synchronized void commit(CommitMessage message) throws IOException {
         RequestMessage current = currentRequestMessage.get(message.fileId);
+        System.out.println("starting commit to file " + message.fileId);
         if(current.requestNum == message.requestNum &&
             message.clientId == getClientThatReceivedVote(message.fileId)){
+            System.out.println("correct file in commit message");
             if(!files.containsKey(message.fileId)){
+                System.out.println("creating file object");
                 FileObject file = new FileObject(current.objectToEditId, serverId);
                 files.put(message.fileId, file);
             }
             files.get(message.fileId).commit(current.message);
+            System.out.println(" commit comlete ");
         }
 
     }

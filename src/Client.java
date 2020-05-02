@@ -61,12 +61,14 @@ public class Client {
         );
 
         long start = System.currentTimeMillis();
-        while(serversResponded.size() < 3 && (System.currentTimeMillis() - start) < Util.TIMEOUT_THRESHOLD){
-            enterCS();
+        while(getNumResponded() < 3 && (System.currentTimeMillis() - start) < Util.TIMEOUT_THRESHOLD){
         }
+        System.out.println("servers responded number " + getNumResponded());
+        enterCS();
+
         while(done != votesReceived){
-            wait();
         }
+
         cleanup();
     }
 
@@ -96,7 +98,6 @@ public class Client {
                 communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
             }
         }
-
     }
 
     synchronized void addReply(int serverId){

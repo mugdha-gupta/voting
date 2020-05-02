@@ -17,12 +17,14 @@ public class FileObject {
         //each server will write to its own copy of the file
         filepath = "/home/012/m/mx/mxg167030/voting/server" + serverId + "/" + "f" + id + ".txt";
         BufferedWriter bw = new BufferedWriter(new FileWriter(filepath));
+        System.out.println("file created");
         bw.close();
     }
 
     synchronized void commit(String message) throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(filepath, true));
         bw.write(message + "\n");
+        System.out.println("file object wrote to file");
         bw.close();
     }
 }
