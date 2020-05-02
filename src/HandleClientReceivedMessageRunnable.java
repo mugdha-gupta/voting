@@ -43,6 +43,12 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             client.addInquireMessage(message);
         }
 
+        if(returnMessage instanceof WaitMessage){
+            WaitMessage message = (WaitMessage) returnMessage;
+            if(requestNum > message.requestNum)
+                return;
+            client.addReply(message.serverId);
+        }
         if(returnMessage instanceof DoneMessage){
             DoneMessage message = (DoneMessage)returnMessage;
             System.out.println("received done from server "+ message.serverId);

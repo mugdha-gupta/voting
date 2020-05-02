@@ -15,6 +15,15 @@ public class HandleIncomingProxyMessage implements  Runnable {
 
     @Override
     public void run() {
+        if(message instanceof  WaitMessage){
+            WaitMessage mess = (WaitMessage) message;
+            System.out.println("sneding wiat message to " + mess.clientId);
+            try {
+                Proxy.sendServerToClientMessage(mess);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         //reply message from server to client
         if(message instanceof  ReplyMessage){
 

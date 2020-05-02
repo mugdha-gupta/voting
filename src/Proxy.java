@@ -146,6 +146,17 @@ public class Proxy {
         return true;
     }
 
+    public static  boolean sendServerToClientMessage(WaitMessage replyMessage) throws IOException {
+        if(disabledServerToClientChannels.containsKey(replyMessage.serverId) &&
+                disabledServerToServerChannels.get(replyMessage.serverId).contains(replyMessage.clientId)){
+//            System.out.println("unable to forward reply message");
+            return false;
+        }
+        clientConnections.get(replyMessage.clientId).sendMessage(replyMessage);
+//        System.out.println("proxy has forwarded reply message");
+        return true;
+    }
+
     public static  boolean sendServerToClientMessage(DoneMessage message) throws IOException {
         if(disabledServerToClientChannels.containsKey(message.serverId) &&
                 disabledServerToServerChannels.get(message.serverId).contains(message.clientId))

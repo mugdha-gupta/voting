@@ -29,6 +29,11 @@ public class ServerCommunicationInterface implements Runnable {
         System.out.println("reply message sent");
         out.writeObject(replyMessage);
     }
+
+    synchronized void sendMessage(WaitMessage message) throws IOException {
+        System.out.println("wait message sent");
+        out.writeObject(message);
+    }
     synchronized void sendMessage(DoneMessage message) throws IOException {
         System.out.println("done messsage sent");
         out.writeObject(message);

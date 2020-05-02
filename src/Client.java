@@ -85,6 +85,7 @@ public class Client {
             System.out.println("waiting for resource");
             waitForGrant();
         }
+        cleanup();
     }
 
     private void waitForGrant() throws IOException {
