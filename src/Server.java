@@ -87,7 +87,8 @@ public class Server {
                 System.out.println("inquire sent to client " + clientReplied);
             }
             else {
-                System.out.println("error: two requests from same client");
+                if(currentRequestMessage.get(requestMessage.objectToEditId).requestNum == requestMessage.requestNum)
+                    System.out.println("error: two requests from same client");
             }
 
         }
@@ -139,6 +140,13 @@ public class Server {
     }
 
     synchronized public void release(ReleaseMessage message) throws IOException {
+        cleanup(message.fileId);
         castVote(message.fileId);
+    }
+
+    synchronized private void cleanup(int fileId) {
+        fileToVoteCastClient.remove(fileId);
+        currentRequestMessage.remove(fileId);
+
     }
 }

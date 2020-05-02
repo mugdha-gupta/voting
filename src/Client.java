@@ -126,7 +126,7 @@ public class Client {
             }
             inCS = true;
             while (done < serversResponded.size()){
-                
+
             }
         }
 
