@@ -17,7 +17,9 @@ public class HandleIncomingProxyMessage implements  Runnable {
     public void run() {
         //reply message from server to client
         if(message instanceof  ReplyMessage){
+
             ReplyMessage mess= (ReplyMessage) message;
+            System.out.println("proxy received reply message from server " + mess.serverId + " to client " + mess.clientId);
             try {
                 Proxy.sendServerToClientMessage(mess);
             } catch (IOException e) {

@@ -137,9 +137,12 @@ public class Proxy {
 
     public static  boolean sendServerToClientMessage(ReplyMessage replyMessage) throws IOException {
         if(disabledServerToClientChannels.containsKey(replyMessage.serverId) &&
-                disabledServerToServerChannels.get(replyMessage.serverId).contains(replyMessage.clientId))
+                disabledServerToServerChannels.get(replyMessage.serverId).contains(replyMessage.clientId)){
+            System.out.println("unable to forward reply message");
             return false;
+        }
         clientConnections.get(replyMessage.clientId).sendMessage(replyMessage);
+        System.out.println("proxy has forwarded reply message");
         return true;
     }
 
