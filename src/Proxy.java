@@ -45,15 +45,6 @@ public class Proxy {
             disableConnections();
         }
 
-        System.out.println("connections disabled");
-        System.out.println("server connections");
-        System.out.println(disabledServerToServerChannels.toString());
-        System.out.println("client connections");
-        System.out.println(disabledServerToClientChannels.toString());
-        for (ProxyCommunicationInterface runnable: clientConnections.values()
-        ) {
-            runnable.sendMessage(new PartitionMessage(-1, -1, "part"));
-        }
 
     }
 
@@ -133,40 +124,108 @@ public class Proxy {
 
     }
 
-    public static boolean sendServerToServerMessage(int senderServerId, int receiverServerId, MyMessage myMessage) throws IOException {
-        if(disabledServerToServerChannels == null){
-            serverConnections.get(receiverServerId).sendMessage(myMessage);
-            return true;
-        }
+//    public static boolean sendServerToServerMessage(int senderServerId, int receiverServerId, MyMessage myMessage) throws IOException {
+//        if(disabledServerToServerChannels == null){
+//            serverConnections.get(receiverServerId).sendMessage(myMessage);
+//            return true;
+//        }
+//
+//        else if(disabledServerToServerChannels.containsKey(senderServerId)){
+//            ArrayList<Integer> banner = disabledServerToServerChannels.get(senderServerId);
+//            if(!banner.contains(receiverServerId)){
+//                serverConnections.get(receiverServerId).sendMessage(myMessage);
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
-        else if(disabledServerToServerChannels.containsKey(senderServerId)){
-            ArrayList<Integer> banner = disabledServerToServerChannels.get(senderServerId);
-            if(!banner.contains(receiverServerId)){
-                serverConnections.get(receiverServerId).sendMessage(myMessage);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static  boolean sendServerToClientMessage(int serverId, int clientId, ClientMessage myMessage) throws IOException {
-        if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToServerChannels.get(serverId).contains(clientId))
+    public static  boolean sendServerToClientMessage(ReplyMessage replyMessage) throws IOException {
+        if(disabledServerToClientChannels.containsKey(replyMessage.serverId) &&
+                disabledServerToServerChannels.get(replyMessage.serverId).contains(replyMessage.clientId))
             return false;
-        clientConnections.get(clientId).sendMessage(myMessage);
+        clientConnections.get(replyMessage.clientId).sendMessage(replyMessage);
         return true;
     }
 
-    public static  boolean sendClientToServerMessage(int clientId, int serverId, MyMessage myMessage) throws IOException {
-        if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToClientChannels.get(serverId).contains(clientId))
-        {
-            System.out.println("blocked message from client " + clientId + " to server " + serverId);
-
+    public static  boolean sendServerToClientMessage(DoneMessage message) throws IOException {
+        if(disabledServerToClientChannels.containsKey(message.serverId) &&
+                disabledServerToServerChannels.get(message.serverId).contains(message.clientId))
             return false;
-        }
-        System.out.println("delivering message from client " + clientId + " to server " + serverId);
-        serverConnections.get(serverId).sendMessage(myMessage);
+        clientConnections.get(message.clientId).sendMessage(message);
         return true;
     }
 
+    public static  boolean sendServerToClientMessage(FailedMessage failedMessage) throws IOException {
+        if(disabledServerToClientChannels.containsKey(failedMessage.serverId) &&
+                disabledServerToServerChannels.get(failedMessage.serverId).contains(failedMessage.requestMessage.clientId))
+            return false;
+        clientConnections.get(failedMessage.requestMessage.clientId).sendMessage(failedMessage);
+        return true;
+    }
+
+    public static  boolean sendServerToClientMessage(InquireMessage inquireMessage) throws IOException {
+        if(disabledServerToClientChannels.containsKey(inquireMessage.serverId) &&
+                disabledServerToServerChannels.get(inquireMessage.serverId).contains(inquireMessage.clientReplied))
+            return false;
+        clientConnections.get(inquireMessage.clientReplied).sendMessage(inquireMessage);
+        return true;
+    }
+
+//    public static  boolean sendClientToServerMessage(int clientId, int serverId, MyMessage myMessage) throws IOException {
+//        if(disabledServerToClientChannels.containsKey(serverId) && disabledServerToClientChannels.get(serverId).contains(clientId))
+//        {
+//            System.out.println("blocked message from client " + clientId + " to server " + serverId);
+//
+//            return false;
+//        }
+//        System.out.println("delivering message from client " + clientId + " to server " + serverId);
+//        serverConnections.get(serverId).sendMessage(myMessage);
+//        return true;
+//    }
+
+    public static boolean sendClientRequestToServerMessage(RequestMessage message) throws IOException {
+        int server = message.serverId;
+        int client = message.clientId;
+        if(disabledServerToClientChannels.containsKey(server) &&
+                disabledServerToClientChannels.get(server).contains(client)){
+            return false;
+        }
+
+        serverConnections.get(server).sendMessage(message);
+        return true;
+    }
+
+    public static void sendClientYieldToServerMessage(YieldMessage yieldMessage) throws IOException {
+        int server = yieldMessage.requestMessage.serverId;
+        int client = yieldMessage.requestMessage.clientId;
+        if(disabledServerToClientChannels.containsKey(server) &&
+                disabledServerToClientChannels.get(server).contains(client)){
+            return;
+        }
+
+        serverConnections.get(server).sendMessage(yieldMessage);
+    }
+
+    public static void sendClientCommitToServerMessage(CommitMessage message) throws IOException {
+        int server = message.serverId;
+        int client = message.clientId;
+        if(disabledServerToClientChannels.containsKey(server) &&
+                disabledServerToClientChannels.get(server).contains(client)){
+            return;
+        }
+
+        serverConnections.get(server).sendMessage(message);
+    }
+    public static void sendClientReleaseToServerMessage(ReleaseMessage message) throws IOException {
+        int server = message.serverId;
+        int client = message.clientId;
+        if(disabledServerToClientChannels.containsKey(server) &&
+                disabledServerToClientChannels.get(server).contains(client)){
+            return;
+        }
+
+        serverConnections.get(server).sendMessage(message);
+    }
 }

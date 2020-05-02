@@ -1,8 +1,12 @@
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /*
  * MyServerSocket class
@@ -12,7 +16,7 @@ import java.net.Socket;
 public class ClientCommunicationInterface implements Runnable {
     Client client;
     ObjectInputStream in;
-    ObjectOutputStream out;
+    public ObjectOutputStream out;
     Socket socket;
 
     public ClientCommunicationInterface(Client client) throws IOException {
@@ -23,39 +27,20 @@ public class ClientCommunicationInterface implements Runnable {
     }
 
 
-    synchronized void sendMessage(MyMessage myMessage) throws IOException {
-        out.writeObject(myMessage);
+    synchronized void sendRequest(RequestMessage requestMessage) throws IOException {
+        out.writeObject(requestMessage);
     }
 
-    //we will listen for incoming messages when this runnable is executed
-    @Override
-    public void run() {
-
-        Object message;
-        while(true){
-            try {
-                message = in.readObject();
-                if(message == null)
-                    continue;
-
-                if(message instanceof ClientMessage)
-                    System.out.println(((ClientMessage) message).message);
-
-                if(message instanceof PartitionMessage){
-                    System.out.println(((PartitionMessage)message).message);
-                    sendToAll();
-                }
-
-            } catch (IOException | ClassNotFoundException e) {
-                continue;
-            }
-        }
+    synchronized void sendRelease(ReleaseMessage message) throws IOException {
+        out.writeObject(message);
     }
 
-    private void sendToAll() throws IOException {
-        for(int i = 1; i <= 7 ; i++){
-            sendMessage(new MyMessage(client.clientId, i, "hello world from client " + client.clientId));
-        }
+    synchronized  void sendMessage(YieldMessage yieldMessage) throws  IOException {
+        out.writeObject(yieldMessage);
+    }
+
+    synchronized void sendCommitMessage(CommitMessage commitMessage) throws IOException{
+        out.writeObject(commitMessage);
     }
 
     //close streams
@@ -63,6 +48,25 @@ public class ClientCommunicationInterface implements Runnable {
         out.close();
         in.close();
         socket.close();
+    }
+
+    @Override
+    public void run() {
+        ExecutorService pool = Executors.newFixedThreadPool(5);
+
+        Object object = null;
+        while (true){
+            try {
+                object = in.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            if(object == null)
+                continue;
+
+            pool.execute(new HandleClientReceivedMessageRunnable(client, object));
+
+        }
     }
 
 }

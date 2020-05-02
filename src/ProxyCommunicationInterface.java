@@ -26,15 +26,34 @@ public class ProxyCommunicationInterface implements Runnable {
         in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
-    synchronized public void sendMessage(MyMessage myMessage) throws IOException {
+    synchronized  public void sendMessage(CantReachServerErrorMessage cantReachServerErrorMessage) throws IOException {
+        out.writeObject(cantReachServerErrorMessage);
+    }
+    synchronized  public void sendMessage(DoneMessage message) throws IOException {
+        out.writeObject(message);
+    }
+    synchronized  public void sendMessage(ReleaseMessage message) throws IOException {
+        out.writeObject(message);
+    }
+    synchronized  public void sendMessage(CommitMessage commitMessage) throws IOException {
+        out.writeObject(commitMessage);
+    }
+    synchronized public void sendMessage(FailedMessage failedMessage) throws IOException {
+        out.writeObject(failedMessage);
+    }
+    synchronized public void sendMessage(ReplyMessage myMessage) throws IOException {
         out.writeObject(myMessage);
     }
-    synchronized public void sendMessage(ClientMessage myMessage) throws IOException {
-        out.writeObject(myMessage);
+    synchronized public void sendMessage(InquireMessage inquireMessage) throws IOException {
+        out.writeObject(inquireMessage);
     }
-    synchronized public void sendMessage(PartitionMessage myMessage) throws IOException {
-        out.writeObject(myMessage);
+    synchronized public void sendMessage(RequestMessage message) throws IOException {
+        out.writeObject(message);
     }
+    synchronized public void sendMessage(YieldMessage message) throws IOException {
+        out.writeObject(message);
+    }
+
     //we will listen for incoming messages when this runnable is executed
     @Override
     public void run() {

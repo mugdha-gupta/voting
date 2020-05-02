@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /*
  * MyServerSocket class
@@ -23,21 +25,24 @@ public class ServerCommunicationInterface implements Runnable {
 
     }
 
-    synchronized void sendMessage(MyMessage myMessage) throws IOException {
-        out.writeObject(myMessage);
+    synchronized void sendMessage(ReplyMessage replyMessage) throws IOException {
+        out.writeObject(replyMessage);
     }
-    synchronized void sendMessage(ClientMessage myMessage) throws IOException {
-        out.writeObject(myMessage);
+    synchronized void sendMessage(DoneMessage message) throws IOException {
+        out.writeObject(message);
+    }
+    synchronized void sendMessage(FailedMessage failedMessage) throws IOException {
+        out.writeObject(failedMessage);
+    }
+
+    synchronized void sendMessage(InquireMessage inquireMessage) throws IOException {
+        out.writeObject(inquireMessage);
     }
     //we will listen for incoming messages when this runnable is executed
     @Override
     public void run() {
 
-//        try {
-//            sendToAllClients();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        ExecutorService serverHandleIncomingMessages = Executors.newFixedThreadPool(5);
 
         Object message;
         while(true){
@@ -46,8 +51,17 @@ public class ServerCommunicationInterface implements Runnable {
                 if(message == null)
                     continue;
 
-                if(message instanceof MyMessage)
-                    System.out.println(((MyMessage) message).message);
+                if(message instanceof RequestMessage){
+                    serverHandleIncomingMessages.execute(new ServerHandleRequestMessageRunnable(server, (RequestMessage)message));
+                }
+
+                if(message instanceof YieldMessage){
+                    serverHandleIncomingMessages.execute(new ServerHandleYieldMessageRunnable(server, (YieldMessage)message));
+                }
+
+                if(message instanceof CommitMessage){
+                    serverHandleIncomingMessages.execute(new ServerHandleCommitMessageRunnable(server, (CommitMessage)message));
+                }
 
             } catch (IOException | ClassNotFoundException e) {
                 continue;
@@ -55,23 +69,6 @@ public class ServerCommunicationInterface implements Runnable {
         }
     }
 
-    private void sendToAllServers() throws IOException {
-        for(int i = 1; i <= Util.NUM_SERVERS ; i++){
-            if(i == server.serverId)
-                continue;
-            sendMessage(new MyMessage(server.serverId, i, "server " + server.serverId ));
-
-        }
-    }
-
-    private void sendToAllClients() throws IOException {
-        for(int i = 1; i <= Util.NUM_CLIENTS ; i++){
-            if(i == server.serverId)
-                continue;
-            sendMessage(new ClientMessage(server.serverId, i, "server " + server.serverId ));
-
-        }
-    }
 
     //close streams
     void clean() throws IOException {

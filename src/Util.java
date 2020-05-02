@@ -20,6 +20,9 @@ public class Util {
     static final int SERVER_PROXY_LISTENING_PORT = 13000;
     static final int CLIENT_PROXY_LISTENING_PORT = 14000;
 
+    //timeout
+    static final int TIMEOUT_THRESHOLD = 5000;//we will wait 5 at most
+
     //returns the socket to the proxy for the server
     static Socket getProxyServerSocket() throws IOException {
         //create local socket
@@ -53,6 +56,10 @@ public class Util {
         Socket socket = listener.accept();
         listener.close();
         return socket;
+    }
+
+    static int hash(int id){
+        return id%NUM_SERVERS;
     }
 
 }
