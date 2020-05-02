@@ -107,6 +107,7 @@ public class Server {
         fileToVoteCastClient.put(requestMessage.objectToEditId, requestMessage.clientId);
         currentRequestMessage.put(requestMessage.objectToEditId, requestMessage);
         communicationInterface.sendMessage(new ReplyMessage(serverId, requestMessage.clientId, requestMessage));
+        System.out.println("cast vote to client " + requestMessage.clientId);
     }
 
     synchronized void commit(CommitMessage message) throws IOException {
@@ -121,7 +122,7 @@ public class Server {
                 files.put(message.fileId, file);
             }
             files.get(message.fileId).commit(current.message);
-            System.out.println(" commit comlete ");
+            System.out.println(" commit complete ");
         }
 
     }

@@ -43,12 +43,12 @@ public class Client {
         Thread thread = new Thread(communicationInterface);
         thread.start();
 
-       // while (true){
-        if(clientId == 1){
+        for(int i = 0 ; i < 5 ; i++){
+        if(clientId == 1 || clientId == 2){
             requestNum++;
             fileId = generateRequestId();
             requestMessage();}
-       // }
+        }
     }
 
     private void requestMessage() throws IOException, InterruptedException {

@@ -72,11 +72,12 @@ public class Util {
     }
 
     static int getServer3(int id){
-        int ret = (id+2)%NUM_SERVERS;
-        if(ret == 0)
-            return NUM_SERVERS;
-        else
-            return ret;
+        return 4;
+//        int ret = (id+2)%NUM_SERVERS;
+//        if(ret == 0)
+//            return NUM_SERVERS;
+//        else
+//            return ret;
     }
 
 }
