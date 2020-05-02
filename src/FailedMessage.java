@@ -1,4 +1,6 @@
-public class FailedMessage {
+import java.io.Serializable;
+
+public class FailedMessage implements Serializable {
     int serverId;
     RequestMessage requestMessage;
 

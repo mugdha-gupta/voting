@@ -1,4 +1,6 @@
-public class YieldMessage {
+import java.io.Serializable;
+
+public class YieldMessage implements Serializable {
     RequestMessage requestMessage;
 
     public YieldMessage(RequestMessage requestMessage) {

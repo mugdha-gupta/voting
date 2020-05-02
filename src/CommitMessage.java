@@ -1,4 +1,6 @@
-public class CommitMessage {
+import java.io.Serializable;
+
+public class CommitMessage implements Serializable {
     int clientId;
     int requestNum;
     int serverId;

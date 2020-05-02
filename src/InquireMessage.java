@@ -1,4 +1,6 @@
-public class InquireMessage {
+import java.io.Serializable;
+
+public class InquireMessage implements Serializable {
     int serverId;
     int clientReplied;
     RequestMessage requestMessage;

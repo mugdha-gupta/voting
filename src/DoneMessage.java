@@ -1,4 +1,6 @@
-public class DoneMessage {
+import java.io.Serializable;
+
+public class DoneMessage implements Serializable {
     int clientId;
     int serverId;
     int fileId;
