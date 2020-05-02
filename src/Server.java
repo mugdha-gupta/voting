@@ -152,7 +152,17 @@ public class Server {
     }
 
     synchronized public void release(ReleaseMessage message) throws IOException {
-        if(currentRequestMessage == null || fileToVoteCastClient == null)
+        if(requestQueue.containsKey(message.fileId)){
+            RequestMessage commited = null;
+            for(RequestMessage rm : requestQueue.get(message.fileId)){
+                if(rm.clientId == message.clientId && rm.objectToEditId == message.fileId && rm.requestNum == message.requestNum)
+                    commited = rm;
+            }
+            if(commited != null)
+                requestQueue.get(message.fileId).remove(commited);
+        }
+        if(currentRequestMessage == null || fileToVoteCastClient == null ||
+                !currentRequestMessage.containsKey(message.fileId) || !fileToVoteCastClient.containsKey(message.fileId))
             return;
         if(currentRequestMessage.get(message.fileId).requestNum != message.requestNum ||
                 fileToVoteCastClient.get(message.fileId) != message.clientId)
