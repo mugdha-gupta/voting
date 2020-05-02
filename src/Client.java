@@ -39,9 +39,10 @@ public class Client {
         done = 0;
 
        // while (true){
+        if(clientId == 1){
             requestNum++;
             fileId = generateRequestId();
-            requestMessage();
+            requestMessage();}
        // }
     }
 
