@@ -152,6 +152,8 @@ public class Server {
     }
 
     synchronized public void release(ReleaseMessage message) throws IOException {
+        if(currentRequestMessage == null || fileToVoteCastClient == null)
+            return;
         if(currentRequestMessage.get(message.fileId).requestNum != message.requestNum ||
                 fileToVoteCastClient.get(message.fileId) != message.clientId)
             return;
