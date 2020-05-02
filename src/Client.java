@@ -191,7 +191,7 @@ public class Client {
 
     }
 
-    synchronized public void done(DoneMessage message){
+    public void done(DoneMessage message){
         done++;
     }
 }
