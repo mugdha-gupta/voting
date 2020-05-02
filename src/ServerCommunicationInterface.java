@@ -72,6 +72,10 @@ public class ServerCommunicationInterface implements Runnable {
                     serverHandleIncomingMessages.execute(new ServerHandleCommitMessageRunnable(server, (CommitMessage)message));
                 }
 
+                if(message instanceof ReleaseMessage){
+                    serverHandleIncomingMessages.execute(new ServerHandleReleaseMessageRunnable(server, (ReleaseMessage)message));
+                }
+
             } catch (IOException | ClassNotFoundException e) {
                 continue;
             }
