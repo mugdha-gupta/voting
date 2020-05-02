@@ -109,6 +109,7 @@ public class HandleIncomingProxyMessage implements  Runnable {
         }
 
         if(message instanceof AcknowledgementMessage){
+            System.out.println("received ack from " + localId);
             Proxy.partitionReceived.countDown();
         }
 
