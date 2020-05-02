@@ -122,15 +122,29 @@ public class Server {
         }
         if(message == null)
             System.out.println("not possible");
+        RequestMessage toCommit = current;
+        if(current.clientId != message.clientId || current.requestNum != message.requestNum){
+            for(RequestMessage rm : requestQueue.get(message.fileId)){
+                if(rm.clientId == message.clientId && rm.requestNum == message.requestNum)
+                    toCommit = rm;
+            }
+
+            if(toCommit == current){
+                System.out.println("couldn't fine message to commit");
+                return;
+            }
+        }
+
 
         System.out.println("starting commit to file " + message.fileId);
         System.out.println("correct file in commit message");
         if(!files.containsKey(message.fileId)){
             System.out.println("creating file object");
-            FileObject file = new FileObject(current.objectToEditId, serverId);
+            FileObject file = new FileObject(toCommit.objectToEditId, serverId);
             files.put(message.fileId, file);
         }
-        files.get(message.fileId).commit(current.message);
+
+        files.get(message.fileId).commit(toCommit.message);
         System.out.println(" commit complete ");
 
     }
