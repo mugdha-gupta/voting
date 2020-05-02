@@ -78,6 +78,7 @@ public class Client {
     }
 
     synchronized private void cleanup() throws IOException {
+        System.out.println("cleanup called");
         if(inquireMessages == null)
             inquireMessages = new ArrayList<>();
         sendRelease();
