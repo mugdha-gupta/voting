@@ -60,6 +60,7 @@ public class Proxy {
         while(partitionReceived.getCount() > 0){
 
         }
+        System.out.println("received all parition acknowledements");
         for(ProxyCommunicationInterface runnable : serverConnections.values()){
             runnable.sendMessage(new PartitionMessage());
         }
