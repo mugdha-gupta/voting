@@ -38,6 +38,8 @@ public class Client {
         fileId = 0;
         done = 0;
 
+        communicationInterface.run();
+
        // while (true){
         if(clientId == 1){
             requestNum++;
