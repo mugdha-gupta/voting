@@ -90,6 +90,8 @@ public class Server {
     }
 
     synchronized void castVote(int fileId) throws IOException {
+        if(currentRequestMessage == null)
+            currentRequestMessage = new HashMap<>();
         RequestMessage requestMessage = requestQueue.get(fileId).poll();
         fileToVoteCastClient.put(requestMessage.objectToEditId, requestMessage.clientId);
         currentRequestMessage.put(requestMessage.objectToEditId, requestMessage);
