@@ -178,6 +178,11 @@ public class Client {
     }
 
     public void addInquireMessage(InquireMessage message) {
+        for(InquireMessage im : inquireMessages){
+            if(im.requestMessage.requestNum == message.requestMessage.requestNum
+            && im.requestMessage.clientId == message.requestMessage.clientId)
+                break;
+        }
         inquireMessages.add(message);
     }
 

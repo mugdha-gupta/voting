@@ -82,7 +82,7 @@ public class Server {
             //else if we have sent it to a client with a lower priority
             else if(clientReplied > requestMessage.clientId) // send an inquire to the client we have sent a reply to{
             {
-                communicationInterface.sendMessage(new InquireMessage(serverId, clientReplied, requestMessage));
+                communicationInterface.sendMessage(new InquireMessage(serverId, clientReplied, currentRequestMessage.get(requestMessage.objectToEditId)));
                 communicationInterface.sendMessage(new WaitMessage(requestMessage.clientId, requestMessage.serverId, requestMessage.requestNum, requestMessage.objectToEditId));
                 System.out.println("inquire sent to client " + clientReplied);
             }
