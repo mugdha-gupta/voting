@@ -151,11 +151,10 @@ public class Client {
     }
 
     private int generateRequestId() {
-        return 5;
-//        Random r = new Random();
-//        int from = 1;
-//        int to = 71;
-//        return r.nextInt(to-from) + from;
+        Random r = new Random();
+        int from = 1;
+        int to = 7;
+        return r.nextInt(to-from) + from;
     }
 
 
