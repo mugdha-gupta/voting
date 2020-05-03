@@ -17,7 +17,6 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
 
         if(returnMessage instanceof ReplyMessage){
             ReplyMessage message = (ReplyMessage) returnMessage;
-            System.out.println("received reply from server " + message.serverId);
             if(requestNum > message.requestMessage.requestNum)
                 return;
             client.incrementVotesReceived(message.serverId);
@@ -31,7 +30,6 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
 
         if(returnMessage instanceof FailedMessage){
             FailedMessage message = (FailedMessage)returnMessage;
-            System.out.println("received failed from server "+ message.serverId);
             if(requestNum > message.requestMessage.requestNum)
                 return;
             client.incrementFailsReceived();
@@ -45,7 +43,6 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
 
         if(returnMessage instanceof InquireMessage){
             InquireMessage message = (InquireMessage)returnMessage;
-            System.out.println("received inquire from server "+ message.serverId);
             if(message.requestMessage == null)
                 return;
             if(requestNum > message.requestMessage.requestNum)

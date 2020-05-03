@@ -69,7 +69,7 @@ public class Proxy {
         }
     }
 
-    private static void partition() {
+    private static void partition() throws IOException {
         Scanner in = new Scanner(System.in);
         System.out.println("how many partitions will there be?");
         int numPart = in.nextInt();
@@ -123,6 +123,9 @@ public class Proxy {
             }
         }
 
+        for(ProxyCommunicationInterface runnable : clientConnections.values()){
+            runnable.sendMessage(new PartitionMessage());
+        }
     }
 
 

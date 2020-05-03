@@ -50,11 +50,8 @@ public class Client {
             requestMessage();
         }
         communicationInterface.sendAcknowledgement(new AcknowledgementMessage());
-        System.out.println("sent acknowledgement");
         while (partitioned){
-
         }
-        System.out.println("resuming requests");
         for(int i = 0 ;i < 5; i++){
             requestNum++;
             fileId = generateRequestId();
@@ -79,11 +76,9 @@ public class Client {
         long start = System.currentTimeMillis();
         while(getNumResponded() < 3 && (System.currentTimeMillis() - start) < Util.TIMEOUT_THRESHOLD){
         }
-        System.out.println("servers responded number " + getNumResponded());
         enterCS();
 
         if(!inCS && getNumResponded() < 3){
-            System.out.println("partitioned");
             if(getNumResponded() < 2){
                 //operation failed, move on
                 System.out.println("write for file object number " + fileId + " cannot be performed " +
@@ -97,31 +92,24 @@ public class Client {
         }
 
         else if(!inCS){
-            System.out.println("waiting for resource");
             waitForGrant();
         }
 
-        System.out.println("done " + done);
         while (done.getCount() > 0){
             Thread.sleep(1000);
-            System.out.println("done " + done);
         }
         cleanup();
     }
 
     private void waitForGrant() throws IOException, InterruptedException {
-        System.out.println("waiting for Grant");
         while(votesReceived < 2 && !inCS){
-            Thread.sleep(3000);
-            System.out.println("still waiting " + votesReceived);
+            Thread.sleep(1000);
 
         }
-        System.out.println("RECEIVED GRANT");
         enterCS();
     }
 
     synchronized private void cleanup() throws IOException {
-        System.out.println("cleanup called");
         if(inquireMessages == null)
             inquireMessages = new ArrayList<>();
         sendRelease();
@@ -143,13 +131,11 @@ public class Client {
 
     synchronized public void enterCS() throws IOException {
         if(votesReceived >= 2 && !inCS){
-            System.out.println("entered CS");
             for(Integer server : serversResponded){
                 communicationInterface.sendCommitMessage(new CommitMessage(clientId, requestNum, server, fileId));
             }
             done = new CountDownLatch(serversResponded.size());
             inCS = true;
-            System.out.println("exiting CS");
         }
 
     }
@@ -197,7 +183,6 @@ public class Client {
     }
 
     public void handleInquires() throws IOException {
-        System.out.println("checking inquires");
         if(inquireMessages == null || inquireMessages.isEmpty())
             return;
 
@@ -210,13 +195,11 @@ public class Client {
             inquireMessages.clear();
         }
         else if(numFails + votesReceived < 3){
-            System.out.println("error: fails and votes != 3");
         }
 
     }
 
     synchronized public void partition() {
-        System.out.println("sent partition to true");
         partitioned = !partitioned;
     }
 }
