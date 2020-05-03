@@ -1,0 +1,3 @@
+sleep 18
+clear
+java Server 7

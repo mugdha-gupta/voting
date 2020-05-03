@@ -1,0 +1,4 @@
+git pull
+javac *.java
+clear
+java Proxy
