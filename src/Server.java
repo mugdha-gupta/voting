@@ -203,7 +203,7 @@ public class Server {
             fileToVoteCastClient.remove(file);
 
         finishedClients.add(clientId);
-
+        requestQueue.toString();
         checkToCast();
         if(finishedClients.size() == Util.NUM_CLIENTS)
             System.exit(0);
