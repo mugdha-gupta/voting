@@ -199,7 +199,7 @@ public class Client {
 
     }
 
-    synchronized public void partition() {
+    public void partition() {
         partitioned = !partitioned;
     }
 }
