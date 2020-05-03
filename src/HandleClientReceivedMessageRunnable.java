@@ -86,6 +86,8 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
 
         if(returnMessage instanceof FileContentsMessage){
             FileContentsMessage message = (FileContentsMessage) returnMessage;
+            client.readMessageReply = true;
+            client.file = message;
             if(message.message == null)
                 System.out.println("This");
         }

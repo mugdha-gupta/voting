@@ -19,8 +19,8 @@ public class Client {
     CountDownLatch done;
     boolean inCS;
     boolean partitioned;
-    boolean readMessageReply;
-    FileContentsMessage file;
+    public boolean readMessageReply;
+    public FileContentsMessage file;
     public static void main(String[] args) throws IOException, InterruptedException {
         if(args.length != 1)
             return;
