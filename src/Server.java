@@ -193,6 +193,9 @@ public class Server {
                 if (rm.clientId == clientId)
                     requestToRemove.add(rm);
             }
+            for(RequestMessage rm: requestToRemove)
+                requestQueue.get(fileId).remove(rm);
+            requestToRemove.clear();
         }
         filesToRemove.clear();
         for(Integer file : currentRequestMessage.keySet()){
