@@ -41,6 +41,7 @@ public class ClientCommunicationInterface implements Runnable {
         out.writeObject(yieldMessage);
     }
     synchronized  void sendMessage(FinishedMessage message) throws  IOException {
+        System.out.println("finish sent from " + message.clientId);
         out.writeObject(message);
     }
     synchronized void sendCommitMessage(CommitMessage commitMessage) throws IOException{

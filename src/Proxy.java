@@ -269,7 +269,6 @@ public class Proxy {
                 return;
             }
             serverConnections.get(server).sendMessage(message);
-            System.out.println("finish sent from client " + message.clientId +  " to server");
 
         }
     }

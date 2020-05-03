@@ -52,12 +52,14 @@ public class ServerCommunicationInterface implements Runnable {
         ExecutorService serverHandleIncomingMessages = Executors.newFixedThreadPool(5);
 
         Object message;
-        while(true){
+        long start = System.currentTimeMillis();
+        while((System.currentTimeMillis() - start) < Util.TIMEOUT_THRESHOLD){
             try {
                 message = in.readObject();
                 if(message == null)
                     continue;
 
+                start = System.currentTimeMillis();
                 if(message instanceof RequestMessage){
                     serverHandleIncomingMessages.execute(new ServerHandleRequestMessageRunnable(server, (RequestMessage)message));
                 }
@@ -90,6 +92,8 @@ public class ServerCommunicationInterface implements Runnable {
                 continue;
             }
         }
+
+        server.shutdown();
     }
 
 
