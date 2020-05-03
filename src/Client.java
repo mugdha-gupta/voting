@@ -83,7 +83,7 @@ public class Client {
         System.out.println("Attemting to read contents of file " + fileId + " on server " + server1);
         communicationInterface.sendMessage(new ReadMessage(clientId, serverToRead, fileId));
         long start = System.currentTimeMillis();
-        while(!readMessageReply || (System.currentTimeMillis() - start) < Util.TIMEOUT_THRESHOLD){
+        while(!readMessageReply && (System.currentTimeMillis() - start) < Util.TIMEOUT_THRESHOLD){
             Thread.sleep(1000);
         }
         if(!readMessageReply)
