@@ -149,11 +149,9 @@ public class Server {
             if(commited != null)
                 requestQueue.get(message.fileId).remove(commited);
         }
-        if(currentRequestMessage == null || fileToVoteCastClient == null ||
-                !currentRequestMessage.containsKey(message.fileId) || !fileToVoteCastClient.containsKey(message.fileId))
+        if(currentRequestMessage == null || fileToVoteCastClient == null)
             return;
-        if(currentRequestMessage.get(message.fileId).requestNum != message.requestNum ||
-                fileToVoteCastClient.get(message.fileId) != message.clientId)
+        if(fileToVoteCastClient.get(message.fileId) != message.clientId)
             return;
         cleanup(message.fileId);
         castVote(message.fileId);
