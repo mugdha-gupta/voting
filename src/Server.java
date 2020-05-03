@@ -205,6 +205,8 @@ public class Server {
         finishedClients.add(clientId);
 
         checkToCast();
+        if(finishedClients.size() == Util.NUM_CLIENTS)
+            System.exit(0);
 
     }
 

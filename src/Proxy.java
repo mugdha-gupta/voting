@@ -15,6 +15,7 @@ public class Proxy {
     static public HashMap<Integer, ProxyCommunicationInterface> clientConnections;
 
     static public CountDownLatch partitionReceived;
+    static public HashSet<Integer> finishedClients;
 
     public static void main(String[] args) throws IOException {
         disabledServerToClientChannels = new HashMap<>();
@@ -22,6 +23,7 @@ public class Proxy {
         serverConnections = new HashMap<>();
         clientConnections = new HashMap<>();
         partitionReceived = new CountDownLatch(clientConnections.size());
+        finishedClients = new HashSet<>();
 
         for(int serverId = 1; serverId <= Util.NUM_SERVERS; serverId++){
             serverConnections.put(serverId, new ProxyCommunicationInterface(true, serverId));
@@ -280,5 +282,9 @@ public class Proxy {
         }
 
         serverConnections.get(server).sendMessage(message);
+    }
+
+    public static void shutdown() {
+        System.exit(0);
     }
 }

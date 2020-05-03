@@ -1,6 +1,7 @@
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 
 public class HandleIncomingProxyMessage implements  Runnable {
 
@@ -115,7 +116,12 @@ public class HandleIncomingProxyMessage implements  Runnable {
 
         if(message instanceof FinishedMessage){
             try {
+                if(Proxy.finishedClients == null)
+                    Proxy.finishedClients = new HashSet<>();
+                Proxy.finishedClients.add(((FinishedMessage) message).clientId);
                 Proxy.sendClientFinishedToServer((FinishedMessage) message);
+                if(Proxy.finishedClients.size() == Util.NUM_CLIENTS)
+                    Proxy.shutdown();
             } catch (IOException e) {
                 e.printStackTrace();
             }
