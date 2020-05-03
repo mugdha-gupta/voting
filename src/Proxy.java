@@ -266,7 +266,7 @@ public class Proxy {
         for(Integer server : serverConnections.keySet()){
             if(disabledServerToClientChannels.containsKey(server) &&
                     disabledServerToClientChannels.get(server).contains(message.clientId)){
-                return;
+                continue;
             }
             serverConnections.get(server).sendMessage(message);
 

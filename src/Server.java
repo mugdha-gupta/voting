@@ -206,9 +206,6 @@ public class Server {
         finishedClients.add(clientId);
         System.out.println(requestQueue.toString());
         checkToCast();
-        if(finishedClients.size() == Util.NUM_CLIENTS)
-            System.exit(0);
-
     }
 
     public void shutdown(){
