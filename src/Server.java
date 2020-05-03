@@ -75,9 +75,11 @@ public class Server {
     synchronized public void receiveRequest(RequestMessage requestMessage) throws IOException {
         //we must queue the request
         queueRequest(requestMessage);
-        checkToCast();
         if(replySentForFile(requestMessage.objectToEditId)){
             int clientReplied = getClientThatReceivedVote(requestMessage.objectToEditId);
+            if(finishedClients.contains(clientReplied)){
+                castVote(requestMessage.objectToEditId);
+            }
             if(clientReplied < requestMessage.clientId) // send a failed message to the client
             {
                 communicationInterface.sendMessage(new FailedMessage(serverId, requestMessage));
@@ -89,10 +91,12 @@ public class Server {
                 communicationInterface.sendMessage(new WaitMessage(requestMessage.clientId, requestMessage.serverId, requestMessage.requestNum, requestMessage.objectToEditId));
             }
             else {
-                if(currentRequestMessage.get(requestMessage.objectToEditId).requestNum == requestMessage.requestNum)
+                if(currentRequestMessage.get(requestMessage.objectToEditId).requestNum == requestMessage.requestNum) {
                     System.out.println("error: two requests from same client");
+                }
             }
 
+            checkToCast();
         }
 
         //if we haven't sent a reply, set reply sent for this file to the client you are sending the reply to
@@ -200,10 +204,7 @@ public class Server {
 
         finishedClients.add(clientId);
 
-        for(Integer fileId : requestQueue.keySet()){
-            if(!fileToVoteCastClient.containsKey(fileId))
-                castVote(fileId);
-        }
+        checkToCast();
 
     }
 
