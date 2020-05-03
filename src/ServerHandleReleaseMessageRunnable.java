@@ -12,7 +12,6 @@ public class ServerHandleReleaseMessageRunnable implements Runnable {
     @Override
     public void run() {
         try {
-            System.out.println("relesase received");
             server.release(message);
         } catch (IOException e) {
             e.printStackTrace();

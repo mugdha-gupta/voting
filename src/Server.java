@@ -177,6 +177,7 @@ public class Server {
     }
 
     synchronized public void finishClient(int clientId) throws IOException {
+        System.out.println("received finish from client " + clientId);
         ArrayList<Integer> filesToRemove = new ArrayList<>();
         for(Integer file : fileToVoteCastClient.keySet()){
             if(fileToVoteCastClient.get(file) == clientId)

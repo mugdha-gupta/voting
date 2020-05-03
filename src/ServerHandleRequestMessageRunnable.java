@@ -12,7 +12,6 @@ public class ServerHandleRequestMessageRunnable implements  Runnable {
     @Override
     public void run() {
 
-        System.out.println("server " + server.serverId + " received request from client " + requestMessage.clientId );
         try {
             server.receiveRequest(requestMessage);
         } catch (IOException e) {
