@@ -21,7 +21,11 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             if(requestNum > message.requestMessage.requestNum)
                 return;
             client.incrementVotesReceived(message.serverId);
-            client.addReply(message.requestMessage.serverId);
+            try {
+                client.addReply(message.requestMessage.serverId);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return;
         }
 
@@ -31,7 +35,11 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             if(requestNum > message.requestMessage.requestNum)
                 return;
             client.incrementFailsReceived();
-            client.addReply(message.requestMessage.serverId);
+            try {
+                client.addReply(message.requestMessage.serverId);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return;
         }
 
@@ -58,7 +66,11 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             WaitMessage message = (WaitMessage) returnMessage;
             if(requestNum > message.requestNum)
                 return;
-            client.addReply(message.serverId);
+            try {
+                client.addReply(message.serverId);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return;
         }
         if(returnMessage instanceof DoneMessage){
