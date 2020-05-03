@@ -17,11 +17,16 @@ public class RequestMessage implements Serializable, Comparable {
     @Override
     public int compareTo(Object o) {
         RequestMessage rm = (RequestMessage) o;
-        if(this.clientId < rm.clientId)
+        if(this.requestNum < rm.requestNum)
             return -1;
-        else if (this.clientId > rm.clientId)
+        else if (this.requestNum > rm.requestNum)
             return 1;
-        else
-            return 0;
+        else{
+            if(this.clientId < rm.clientId)
+                return -1;
+            if(this.clientId > rm.clientId)
+                return 1;
+        }
+        return 0;
     }
 }

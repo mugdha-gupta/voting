@@ -204,7 +204,6 @@ public class Server {
             fileToVoteCastClient.remove(file);
 
         finishedClients.add(clientId);
-        System.out.println(requestQueue.toString());
         checkToCast();
     }
 

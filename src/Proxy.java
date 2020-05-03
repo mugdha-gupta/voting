@@ -93,9 +93,6 @@ public class Proxy {
             partitionToClient.get(partition).add(client);
         }
 
-        System.out.println(partitionToClient.toString());
-        System.out.println(partitionToServer.toString());
-
         for(Integer part1 : partitionToServer.keySet()){
             for(Integer part2 : partitionToServer.keySet()){
                 if(part1 < part2){
