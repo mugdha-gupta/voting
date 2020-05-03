@@ -202,6 +202,5 @@ public class Client {
 
     public void partition() {
         partitioned = !partitioned;
-        System.out.println(partitioned);
     }
 }

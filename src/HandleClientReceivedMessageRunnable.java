@@ -79,7 +79,6 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
         }
 
         if(returnMessage instanceof PartitionMessage){
-            System.out.println("received");
             client.partition();
             return;
         }
