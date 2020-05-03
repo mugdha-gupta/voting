@@ -1,10 +1,8 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class FileObject {
     int id;
-    String filepath;
+    public String filepath;
     int serverId;
 
     public FileObject(int id, int serverId) throws IOException {
@@ -26,5 +24,19 @@ public class FileObject {
         bw.write(message + "\n");
         System.out.println("file object wrote to file");
         bw.close();
+    }
+
+    public synchronized String getFileContents()
+    {
+        StringBuilder messageBuilder = new StringBuilder();
+        String line;
+        try (BufferedReader br = new BufferedReader(new FileReader(filepath))){
+            while ((line = br.readLine()) != null){
+                messageBuilder.append(line).append("\n");
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return messageBuilder.toString();
     }
 }

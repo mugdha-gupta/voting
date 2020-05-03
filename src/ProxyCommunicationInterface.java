@@ -35,10 +35,16 @@ public class ProxyCommunicationInterface implements Runnable {
     synchronized  public void sendMessage(FinishedMessage message) throws IOException {
         out.writeObject(message);
     }
+    synchronized  public void sendMessage(ReadMessage message) throws IOException {
+        out.writeObject(message);
+    }
     synchronized  public void sendMessage(PartitionMessage message) throws IOException {
         out.writeObject(message);
     }
     synchronized  public void sendMessage(WaitMessage message) throws IOException {
+        out.writeObject(message);
+    }
+    synchronized  public void sendMessage(FileContentsMessage message) throws IOException {
         out.writeObject(message);
     }
     synchronized  public void sendMessage(ReleaseMessage message) throws IOException {

@@ -19,7 +19,8 @@ public class Client {
     CountDownLatch done;
     boolean inCS;
     boolean partitioned;
-
+    boolean readMessageReply;
+    FileContentsMessage file;
     public static void main(String[] args) throws IOException, InterruptedException {
         if(args.length != 1)
             return;
@@ -41,31 +42,62 @@ public class Client {
         fileId = 0;
         inCS =false;
         partitioned = false;
+        readMessageReply = false;
+        file = null;
 
         Thread thread = new Thread(communicationInterface);
         thread.start();
-        while(!partitioned){
+        while(!partitioned || requestNum < 15){
             requestNum++;
             fileId = generateRequestId();
             requestMessage();
         }
-        communicationInterface.sendAcknowledgement(new AcknowledgementMessage());
+
+        if(partitioned)
+            communicationInterface.sendAcknowledgement(new AcknowledgementMessage());
         while (partitioned){
             Thread.sleep(1000);
         }
+
         for(int i = 0 ;i < 5; i++){
             requestNum++;
             fileId = generateRequestId();
             requestMessage();
         }
+
+        readFile();
         System.out.println("done");
         communicationInterface.sendMessage(new FinishedMessage(clientId));
         shutdown();
     }
 
-    private void shutdown() throws IOException {
+    private void readFile() throws IOException, InterruptedException {
+        int fileId = generateRequestId();
+        ArrayList<Integer> servers = new ArrayList<>();
+        server1 = Util.hash(fileId);
+        servers.add(server1);
+        servers.add(Util.getServer2(server1));
+        servers.add(Util.getServer3(server1));
+        Random ran = new Random();
+        int serverToRead = servers.get(ran.nextInt(servers.size()));
+        System.out.println("Attemting to read contents of file " + fileId + " on server " + server1);
+        communicationInterface.sendMessage(new ReadMessage(clientId, serverToRead, fileId));
+        long start = System.currentTimeMillis();
+        while(!readMessageReply || (System.currentTimeMillis() - start) < Util.TIMEOUT_THRESHOLD){
+            Thread.sleep(1000);
+        }
+        if(!readMessageReply)
+            System.out.println("The random server chosen to read this message on was not available");
+        else if(readMessageReply && file.message == null)
+            System.out.println("This file does not exist");
+        else
+            System.out.println("The file contained the following contents \n" + file.message);
+    }
+
+    private void shutdown() {
         System.exit(0);
     }
+
     private void requestMessage() throws IOException, InterruptedException {
         server1 = Util.hash(fileId);
         String message = "client " + clientId + ": --message #" + requestNum + " , servers " + server1 + ", "

@@ -214,4 +214,14 @@ public class Server {
                 castVote(fileId);
         }
     }
+
+    synchronized public void returnFileContents(ReadMessage message) throws IOException {
+        if(!files.containsKey(message.fileId)){
+            communicationInterface.sendMessage(new FileContentsMessage(message.clientId, message.serverId, null));
+            return;
+        }
+
+        String toReturn = files.get(message.clientId).getFileContents();
+        communicationInterface.sendMessage(new FileContentsMessage(message.clientId, message.serverId, toReturn));
+    }
 }

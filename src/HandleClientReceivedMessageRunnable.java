@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 
 public class HandleClientReceivedMessageRunnable implements Runnable {
@@ -83,6 +84,11 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             return;
         }
 
+        if(returnMessage instanceof FileContentsMessage){
+            FileContentsMessage message = (FileContentsMessage) returnMessage;
+            if(message.message == null)
+                System.out.println("This");
+        }
 
 
     }

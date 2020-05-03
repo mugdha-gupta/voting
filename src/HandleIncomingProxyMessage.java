@@ -1,4 +1,5 @@
 
+import java.io.File;
 import java.io.IOException;
 
 public class HandleIncomingProxyMessage implements  Runnable {
@@ -115,6 +116,22 @@ public class HandleIncomingProxyMessage implements  Runnable {
         if(message instanceof FinishedMessage){
             try {
                 Proxy.sendClientFinishedToServer((FinishedMessage) message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(message instanceof ReadMessage){
+            try {
+                Proxy.sendClientRequestToServerMessage((ReadMessage)message);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(message instanceof FileContentsMessage){
+            try {
+                Proxy.sendServerToClientMessage((FileContentsMessage)message);
             } catch (IOException e) {
                 e.printStackTrace();
             }

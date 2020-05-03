@@ -193,7 +193,13 @@ public class Proxy {
         clientConnections.get(message.clientId).sendMessage(message);
         return true;
     }
-
+    public static  boolean sendServerToClientMessage(FileContentsMessage message) throws IOException {
+        if(disabledServerToClientChannels.containsKey(message.serverId) &&
+                disabledServerToServerChannels.get(message.serverId).contains(message.clientId))
+            return false;
+        clientConnections.get(message.clientId).sendMessage(message);
+        return true;
+    }
     public static  boolean sendServerToClientMessage(FailedMessage failedMessage) throws IOException {
         if(disabledServerToClientChannels.containsKey(failedMessage.serverId) &&
                 disabledServerToServerChannels.get(failedMessage.serverId).contains(failedMessage.requestMessage.clientId))
@@ -212,6 +218,17 @@ public class Proxy {
 
 
     public static boolean sendClientRequestToServerMessage(RequestMessage message) throws IOException {
+        int server = message.serverId;
+        int client = message.clientId;
+        if(disabledServerToClientChannels.containsKey(server) &&
+                disabledServerToClientChannels.get(server).contains(client)){
+            return false;
+        }
+        serverConnections.get(server).sendMessage(message);
+        return true;
+    }
+
+    public static boolean sendClientRequestToServerMessage(ReadMessage message) throws IOException {
         int server = message.serverId;
         int client = message.clientId;
         if(disabledServerToClientChannels.containsKey(server) &&
