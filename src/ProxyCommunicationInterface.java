@@ -32,6 +32,9 @@ public class ProxyCommunicationInterface implements Runnable {
     synchronized  public void sendMessage(DoneMessage message) throws IOException {
         out.writeObject(message);
     }
+    synchronized  public void sendMessage(FinishedMessage message) throws IOException {
+        out.writeObject(message);
+    }
     synchronized  public void sendMessage(PartitionMessage message) throws IOException {
         out.writeObject(message);
     }

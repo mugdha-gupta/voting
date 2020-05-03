@@ -80,6 +80,10 @@ public class ServerCommunicationInterface implements Runnable {
                     server.cleanup(-1);
                 }
 
+                if(message instanceof FinishedMessage){
+                    server.finishClient(((FinishedMessage) message).clientId);
+                }
+
             } catch (IOException | ClassNotFoundException e) {
                 continue;
             }

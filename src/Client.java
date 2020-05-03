@@ -59,6 +59,7 @@ public class Client {
             requestMessage();
         }
         System.out.println("done");
+        communicationInterface.sendMessage(new FinishedMessage(clientId));
         shutdown();
     }
 

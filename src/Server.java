@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 /*
@@ -165,6 +166,37 @@ public class Server {
         }
         fileToVoteCastClient.remove(fileId);
         currentRequestMessage.remove(fileId);
+
+    }
+
+    synchronized public void finishClient(int clientId) throws IOException {
+        ArrayList<Integer> filesToRemove = new ArrayList<>();
+        for(Integer file : fileToVoteCastClient.keySet()){
+            if(fileToVoteCastClient.get(file) == clientId)
+                filesToRemove.add(file);
+        }
+        for(Integer file : filesToRemove)
+            fileToVoteCastClient.remove(file);
+
+        ArrayList<RequestMessage> requestToRemove = new ArrayList<>();
+        for(Integer fileId : requestQueue.keySet()){
+            for(RequestMessage rm: requestQueue.get(fileId)){
+                if (rm.clientId == clientId)
+                    requestToRemove.add(rm);
+            }
+        }
+        filesToRemove.clear();
+        for(Integer file : currentRequestMessage.keySet()){
+            if(currentRequestMessage.get(file).clientId == clientId)
+                filesToRemove.add(file);
+        }
+        for(Integer file : filesToRemove)
+            fileToVoteCastClient.remove(file);
+
+        for(Integer fileId : requestQueue.keySet()){
+            if(!fileToVoteCastClient.containsKey(fileId))
+                castVote(fileId);
+        }
 
     }
 }

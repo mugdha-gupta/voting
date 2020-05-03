@@ -243,6 +243,17 @@ public class Proxy {
 
         serverConnections.get(server).sendMessage(message);
     }
+    public static void sendClientFinishedToServer(FinishedMessage message) throws IOException {
+        for(Integer server : serverConnections.keySet()){
+            if(disabledServerToClientChannels.containsKey(server) &&
+                    disabledServerToClientChannels.get(server).contains(message.clientId)){
+                return;
+            }
+            serverConnections.get(server).sendMessage(message);
+
+        }
+    }
+
     public static void sendClientReleaseToServerMessage(ReleaseMessage message) throws IOException {
         int server = message.serverId;
         int client = message.clientId;
