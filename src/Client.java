@@ -47,7 +47,7 @@ public class Client {
 
         Thread thread = new Thread(communicationInterface);
         thread.start();
-        while(!partitioned || requestNum < 15){
+        while(!partitioned && requestNum < 15){
             requestNum++;
             fileId = generateRequestId();
             requestMessage();
