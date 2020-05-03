@@ -64,7 +64,6 @@ public class Client {
     }
 
     private void shutdown() throws IOException {
-        communicationInterface.clean();
         System.exit(0);
     }
     private void requestMessage() throws IOException, InterruptedException {
