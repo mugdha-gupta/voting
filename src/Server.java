@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.PriorityQueue;
 /*
  * Server class
@@ -16,6 +17,7 @@ public class Server {
     private HashMap<Integer, PriorityQueue<RequestMessage>> requestQueue;
     private HashMap<Integer, RequestMessage> currentRequestMessage;
     private HashMap<Integer, FileObject> files;
+    HashSet<Integer> finishedClients;
 
     //get server id from command line and instantiate server
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -37,6 +39,7 @@ public class Server {
         requestQueue = new HashMap<>();
         currentRequestMessage = new HashMap<>();
         files = new HashMap<>();
+        finishedClients = new HashSet<>();
     }
 
     synchronized public boolean replySentForFile(int fileId){
@@ -72,6 +75,7 @@ public class Server {
     synchronized public void receiveRequest(RequestMessage requestMessage) throws IOException {
         //we must queue the request
         queueRequest(requestMessage);
+        checkToCast();
         if(replySentForFile(requestMessage.objectToEditId)){
             int clientReplied = getClientThatReceivedVote(requestMessage.objectToEditId);
             if(clientReplied < requestMessage.clientId) // send a failed message to the client
@@ -156,6 +160,7 @@ public class Server {
             return;
         cleanup(message.fileId);
         castVote(message.fileId);
+        checkToCast();
     }
 
     synchronized public void cleanup(int fileId) {
@@ -193,10 +198,19 @@ public class Server {
         for(Integer file : filesToRemove)
             fileToVoteCastClient.remove(file);
 
+        finishedClients.add(clientId);
+
         for(Integer fileId : requestQueue.keySet()){
             if(!fileToVoteCastClient.containsKey(fileId))
                 castVote(fileId);
         }
 
+    }
+
+    synchronized  void checkToCast() throws IOException {
+        for(Integer fileId : requestQueue.keySet()){
+            if(!fileToVoteCastClient.containsKey(fileId))
+                castVote(fileId);
+        }
     }
 }
