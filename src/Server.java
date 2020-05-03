@@ -151,7 +151,7 @@ public class Server {
         }
         if(currentRequestMessage == null || fileToVoteCastClient == null)
             return;
-        if(fileToVoteCastClient.get(message.fileId) != message.clientId)
+        if(fileToVoteCastClient.containsKey(message.fileId) && fileToVoteCastClient.get(message.fileId) != message.clientId)
             return;
         cleanup(message.fileId);
         castVote(message.fileId);
