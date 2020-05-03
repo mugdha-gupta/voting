@@ -154,11 +154,12 @@ public class Client {
 
     }
 
-    synchronized void addReply(int serverId){
+    synchronized void addReply(int serverId) throws IOException {
         if(serversResponded.contains(serverId))
             return;
         else
             serversResponded.add(serverId);
+        handleInquires();
     }
 
     synchronized int getRequestNum(){

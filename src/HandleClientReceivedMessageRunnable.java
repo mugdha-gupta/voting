@@ -43,12 +43,15 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             if(requestNum > message.requestMessage.requestNum)
                 return;
 
-            client.addInquireMessage(message);
-            try {
-                client.handleInquires();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(client.numFails >= 2){
+                try {
+                    client.communicationInterface.sendMessage(new YieldMessage(message.requestMessage));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
             }
+            client.addInquireMessage(message);
         }
 
         if(returnMessage instanceof WaitMessage){
