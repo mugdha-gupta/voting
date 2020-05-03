@@ -62,7 +62,8 @@ public class Client {
 
     private void requestMessage() throws IOException, InterruptedException {
         server1 = Util.hash(fileId);
-        String message = "client " + clientId + "fileid "+ fileId + " request number " + requestNum;
+        String message = "client " + clientId + ": --message #" + requestNum + " , servers " + server1 + ", "
+                + Util.getServer2(server1) + ", & " + Util.getServer3(server1);
         System.out.println(message);
         communicationInterface.sendRequest(
                 new RequestMessage(clientId, fileId, server1, requestNum, message)
