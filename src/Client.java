@@ -58,8 +58,14 @@ public class Client {
             fileId = generateRequestId();
             requestMessage();
         }
+        System.out.println("done");
+        shutdown();
     }
 
+    private void shutdown() throws IOException {
+        communicationInterface.clean();
+        System.exit(0);
+    }
     private void requestMessage() throws IOException, InterruptedException {
         server1 = Util.hash(fileId);
         String message = "client " + clientId + ": --message #" + requestNum + " , servers " + server1 + ", "
