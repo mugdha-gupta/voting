@@ -223,7 +223,7 @@ public class Server {
             return;
         }
 
-        String toReturn = files.get(message.clientId).getFileContents();
+        String toReturn = files.get(message.fileId).getFileContents();
         communicationInterface.sendMessage(new FileContentsMessage(message.clientId, message.serverId, toReturn));
     }
 }
