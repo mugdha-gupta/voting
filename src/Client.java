@@ -51,6 +51,7 @@ public class Client {
         }
         communicationInterface.sendAcknowledgement(new AcknowledgementMessage());
         while (partitioned){
+            Thread.sleep(1000);
         }
         for(int i = 0 ;i < 5; i++){
             requestNum++;
@@ -201,5 +202,6 @@ public class Client {
 
     public void partition() {
         partitioned = !partitioned;
+        System.out.println(partitioned);
     }
 }

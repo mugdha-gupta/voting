@@ -60,10 +60,7 @@ public class Proxy {
             runnable.sendMessage(new PartitionMessage());
         }
         while(partitionReceived.getCount() > 0){
-
         }
-        System.out.println("received all parition acknowledements");
-        System.out.println("countdown at " + partitionReceived.getCount());
         for(ProxyCommunicationInterface runnable : serverConnections.values()){
             runnable.sendMessage(new PartitionMessage());
         }
@@ -102,7 +99,6 @@ public class Proxy {
                 if(part1 < part2){
                     for (Integer server : partitionToServer.get(part1)) {
                         for(Integer server2 : partitionToServer.get(part2)){
-                            System.out.println("disabling server " + server + " to server " + server2);
                             disableServerToServerConnection(server, server2);
                         }
                     }
@@ -115,7 +111,6 @@ public class Proxy {
                 if(part1 != part2){
                     for(Integer server: partitionToServer.get(part1)){
                         for(Integer client : partitionToClient.get(part2)){
-                            System.out.println("disabliang server " + server + " to client " + client );
                             disableServerToClientConnection(server, client);
                         }
                     }
