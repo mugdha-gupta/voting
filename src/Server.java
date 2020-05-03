@@ -10,14 +10,14 @@ import java.util.PriorityQueue;
  */
 
 public class Server {
-    static Server server;
+    private static Server server;
     int serverId;
-    public ServerCommunicationInterface communicationInterface;
+    ServerCommunicationInterface communicationInterface;
     private HashMap<Integer, Integer> fileToVoteCastClient;
     private HashMap<Integer, PriorityQueue<RequestMessage>> requestQueue;
     private HashMap<Integer, RequestMessage> currentRequestMessage;
     private HashMap<Integer, FileObject> files;
-    HashSet<Integer> finishedClients;
+    private HashSet<Integer> finishedClients;
 
     //get server id from command line and instantiate server
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -110,21 +110,19 @@ public class Server {
     synchronized void castVote(int fileId) throws IOException {
         if(currentRequestMessage == null)
             currentRequestMessage = new HashMap<>();
-        RequestMessage requestMessage = requestQueue.get(fileId).poll();
-        if(requestMessage == null)
-            return;
-        fileToVoteCastClient.put(requestMessage.objectToEditId, requestMessage.clientId);
-        currentRequestMessage.put(requestMessage.objectToEditId, requestMessage);
-        communicationInterface.sendMessage(new ReplyMessage(serverId, requestMessage.clientId, requestMessage));
+        if(requestQueue.containsKey(fileId)) {
+            RequestMessage requestMessage = requestQueue.get(fileId).poll();
+            if (requestMessage == null)
+                return;
+            fileToVoteCastClient.put(requestMessage.objectToEditId, requestMessage.clientId);
+            currentRequestMessage.put(requestMessage.objectToEditId, requestMessage);
+            communicationInterface.sendMessage(new ReplyMessage(serverId, requestMessage.clientId, requestMessage));
+        }
+        checkToCast();
     }
 
     synchronized void commit(CommitMessage message) throws IOException {
         RequestMessage current = currentRequestMessage.get(message.fileId);
-        if(current == null){
-            return;
-        }
-        if(message == null)
-            System.out.println("not possible");
         RequestMessage toCommit = current;
         if(current.clientId != message.clientId || current.requestNum != message.requestNum){
             for(RequestMessage rm : requestQueue.get(message.fileId)){
@@ -206,7 +204,7 @@ public class Server {
             fileToVoteCastClient.remove(file);
 
         finishedClients.add(clientId);
-        requestQueue.toString();
+        System.out.println(requestQueue.toString());
         checkToCast();
         if(finishedClients.size() == Util.NUM_CLIENTS)
             System.exit(0);

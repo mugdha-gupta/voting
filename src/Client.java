@@ -5,14 +5,14 @@ import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 public class Client {
-    static Client client;
-    int clientId;
-    public ClientCommunicationInterface communicationInterface;
-    int requestNum;
-    int votesReceived;
+    private static Client client;
+    private int clientId;
+    ClientCommunicationInterface communicationInterface;
+    private int requestNum;
+    private int votesReceived;
     int numFails;
-    HashSet<Integer> serversLocked;
-    ArrayList<InquireMessage> inquireMessages;
+    private HashSet<Integer> serversLocked;
+    private ArrayList<InquireMessage> inquireMessages;
     HashSet<Integer> serversResponded;
     int server1;
     int fileId;
@@ -164,7 +164,7 @@ public class Client {
     }
 
     synchronized private void sendRelease() throws IOException {
-        for(Integer server: serversResponded){
+        for(Integer server: serversLocked){
             communicationInterface.sendRelease(new ReleaseMessage(clientId, server, fileId, requestNum));
         }
     }
