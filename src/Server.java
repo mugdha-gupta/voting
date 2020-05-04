@@ -42,16 +42,19 @@ public class Server {
         finishedClients = new HashSet<>();
     }
 
+    //check if we have cast a vote for a file resource
     synchronized public boolean replySentForFile(int fileId){
         if(fileToVoteCastClient == null)
             fileToVoteCastClient = new HashMap<>();
         return fileToVoteCastClient.containsKey(fileId);
     }
 
+    //get the client we have cast a vote for
     synchronized public int getClientThatReceivedVote(int fileId){
         return fileToVoteCastClient.get(fileId);
     }
 
+    //store the request
     synchronized public void queueRequest(RequestMessage requestMessage) {
         PriorityQueue<RequestMessage> queue = null;
         if(requestQueue == null)
@@ -65,6 +68,7 @@ public class Server {
 
     }
 
+    //cast a vote to another client with a higher priority
     synchronized public void receiveYield(YieldMessage message) throws IOException {
         int fileId = message.requestMessage.objectToEditId;
         RequestMessage currentRequest = currentRequestMessage.get(fileId);
@@ -72,6 +76,7 @@ public class Server {
         queueRequest(currentRequest);
     }
 
+    //check if we can reply or send a fail to the request, otherwise inquire
     synchronized public void receiveRequest(RequestMessage requestMessage) throws IOException {
         //we must queue the request
         queueRequest(requestMessage);
@@ -107,6 +112,7 @@ public class Server {
 
     }
 
+    //send a reply to a client
     synchronized void castVote(int fileId) throws IOException {
         if(currentRequestMessage == null)
             currentRequestMessage = new HashMap<>();
@@ -121,6 +127,7 @@ public class Server {
         checkToCast();
     }
 
+    //Commit the contents of a request message to a file
     synchronized void commit(CommitMessage message) throws IOException {
         RequestMessage current = currentRequestMessage.get(message.fileId);
         RequestMessage toCommit = current;
@@ -146,6 +153,7 @@ public class Server {
 
     }
 
+    //allow others to lock the resource
     synchronized public void release(ReleaseMessage message) throws IOException {
         if(requestQueue.containsKey(message.fileId)){
             RequestMessage commited = null;
@@ -176,6 +184,8 @@ public class Server {
 
     }
 
+    //no messages will be received from this client anymore
+    //check to make sure no outstanding requests
     synchronized public void finishClient(int clientId) throws IOException {
         ArrayList<Integer> filesToRemove = new ArrayList<>();
         for(Integer file : fileToVoteCastClient.keySet()){
@@ -217,6 +227,7 @@ public class Server {
         }
     }
 
+    //return file contents request
     synchronized public void returnFileContents(ReadMessage message) throws IOException {
         if(!files.containsKey(message.fileId)){
             communicationInterface.sendMessage(new FileContentsMessage(message.clientId, message.serverId, null));

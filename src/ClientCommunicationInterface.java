@@ -25,7 +25,7 @@ public class ClientCommunicationInterface implements Runnable {
         in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
-
+    //send different types of messages
     synchronized void sendRequest(RequestMessage requestMessage) throws IOException {
         out.writeObject(requestMessage);
     }
@@ -58,6 +58,7 @@ public class ClientCommunicationInterface implements Runnable {
         socket.close();
     }
 
+    //wait for incoming messages
     @Override
     public void run() {
         ExecutorService pool = Executors.newFixedThreadPool(5);

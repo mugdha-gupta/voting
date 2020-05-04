@@ -110,23 +110,8 @@ public class HandleIncomingProxyMessage implements  Runnable {
             }
         }
 
-        if(message instanceof AcknowledgementMessage){
-            Proxy.partitionReceived.countDown();
-        }
 
-        if(message instanceof FinishedMessage){
-            try {
-                if(Proxy.finishedClients == null)
-                    Proxy.finishedClients = new HashSet<>();
-                Proxy.finishedClients.add(((FinishedMessage) message).clientId);
-                Proxy.sendClientFinishedToServer((FinishedMessage) message);
-                if(Proxy.finishedClients.size() == Util.NUM_CLIENTS)
-                    Proxy.shutdown();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
+        //Get file contents from Server
         if(message instanceof ReadMessage){
             try {
                 Proxy.sendClientRequestToServerMessage((ReadMessage)message);
@@ -135,6 +120,7 @@ public class HandleIncomingProxyMessage implements  Runnable {
             }
         }
 
+        //return file contents to CLient
         if(message instanceof FileContentsMessage){
             try {
                 Proxy.sendServerToClientMessage((FileContentsMessage)message);
@@ -142,5 +128,25 @@ public class HandleIncomingProxyMessage implements  Runnable {
                 e.printStackTrace();
             }
         }
+
+        if(message instanceof AcknowledgementMessage){
+            Proxy.partitionReceived.countDown();
+        }
+
+        if(message instanceof FinishedMessage){
+            try {
+                if(Proxy.finishedClients == null) {
+                    Proxy.finishedClients = new HashSet<>();
+                }
+                Proxy.finishedClients.add(((FinishedMessage) message).clientId);
+                Proxy.sendClientFinishedToServer((FinishedMessage) message);
+                if(Proxy.finishedClients.size() == Util.NUM_CLIENTS) {
+                    Proxy.shutdown();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

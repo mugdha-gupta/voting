@@ -25,6 +25,7 @@ public class Proxy {
         partitionReceived = new CountDownLatch(clientConnections.size());
         finishedClients = new HashSet<>();
 
+        //add all server and client connections and start executing them on their own thread
         for(int serverId = 1; serverId <= Util.NUM_SERVERS; serverId++){
             serverConnections.put(serverId, new ProxyCommunicationInterface(true, serverId));
         }
@@ -45,6 +46,7 @@ public class Proxy {
             clientPool.execute(runnable);
         }
 
+        //if the user specifies a partition, ask for the parition information and disable the appropriate connections
         partitionReceived = new CountDownLatch(clientConnections.size());
 
         Scanner scanner = new Scanner(System.in);
@@ -57,6 +59,7 @@ public class Proxy {
 
     }
 
+    //parition detected, so clients should know
     private static void sendPartitionMessage() throws IOException {
         for(ProxyCommunicationInterface runnable : clientConnections.values()){
             runnable.sendMessage(new PartitionMessage());
@@ -68,6 +71,7 @@ public class Proxy {
         }
     }
 
+    //Ask user to specify partition
     private static void partition() throws IOException {
         Scanner in = new Scanner(System.in);
         System.out.println("how many partitions will there be?");

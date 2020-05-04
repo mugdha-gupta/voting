@@ -18,12 +18,14 @@ public class FileObject {
         bw.close();
     }
 
+    //write to the file
     synchronized void commit(String message) throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(filepath, true));
         bw.write(message + "\n");
         bw.close();
     }
 
+    //return file contents as a string to service client request
     public synchronized String getFileContents()
     {
         StringBuilder messageBuilder = new StringBuilder();

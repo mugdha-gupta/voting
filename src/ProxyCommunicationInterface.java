@@ -7,9 +7,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /*
- * MyServerSocket class
- * Runnable that holds all information required to send messages and receive from the server
- * after it receives a message, it creates a new thread to handle it
+ * Proxy class
+ * Runnable that conrols all network traffic betwen servers and clients
  */
 public class ProxyCommunicationInterface implements Runnable {
     boolean isServerConnection;
@@ -26,9 +25,7 @@ public class ProxyCommunicationInterface implements Runnable {
         in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
-    synchronized  public void sendMessage(CantReachServerErrorMessage cantReachServerErrorMessage) throws IOException {
-        out.writeObject(cantReachServerErrorMessage);
-    }
+    //send various messages
     synchronized  public void sendMessage(DoneMessage message) throws IOException {
         out.writeObject(message);
     }
@@ -87,13 +84,6 @@ public class ProxyCommunicationInterface implements Runnable {
                 continue;
             }
         }
-    }
-
-    //close streams
-    void clean() throws IOException {
-        out.close();
-        in.close();
-        socket.close();
     }
 
 }

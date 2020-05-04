@@ -10,7 +10,6 @@ import java.net.Socket;
  * This class holds commonly used information and methods
  */
 public class Util {
-    static String[] serverAddresses = {"dc01.utdallas.edu", "dc02.utdallas.edu", "dc03.utdallas.edu", "dc04.utdallas.edu", "dc05.utdallas.edu", "dc06.utdallas.edu", "dc07.utdallas.edu"};
     static String proxyAddress = "dc10.utdallas.edu";
 
     static final int NUM_SERVERS = 7;
@@ -58,6 +57,7 @@ public class Util {
         return socket;
     }
 
+    //hash function that indicates server location for a file
     static int hash(int id){
         int ret = id%NUM_SERVERS;
         return ret+1;

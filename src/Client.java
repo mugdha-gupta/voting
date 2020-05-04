@@ -175,6 +175,7 @@ public class Client {
         cleanup();
     }
 
+    //we have access to servers so we will wait for a grant to show up
     private void waitForGrant() throws IOException, InterruptedException {
         while(votesReceived < 2 && !inCS){
             Thread.sleep(1000);
@@ -183,6 +184,7 @@ public class Client {
         enterCS();
     }
 
+    //get ready for next message
     synchronized private void cleanup() throws IOException {
         if(inquireMessages == null)
             inquireMessages = new ArrayList<>();
@@ -197,12 +199,14 @@ public class Client {
         inCS = false;
     }
 
+    //send a release resource message to all servers we have locked
     synchronized private void sendRelease() throws IOException {
         for(Integer server: serversLocked){
             communicationInterface.sendRelease(new ReleaseMessage(clientId, server, fileId, requestNum));
         }
     }
 
+    //tell the servers to commit the message
     synchronized public void enterCS() throws IOException {
         if(votesReceived >= 2 && !inCS){
             for(Integer server : serversResponded){
@@ -214,6 +218,7 @@ public class Client {
 
     }
 
+    //log servers that have replied to us
     synchronized void addReply(int serverId) throws IOException {
         if(serversResponded.contains(serverId))
             return;
@@ -226,6 +231,7 @@ public class Client {
         return requestNum;
     }
 
+    //generate a random request file id
     private int generateRequestId() {
         Random r = new Random();
         int from = 1;
@@ -233,7 +239,7 @@ public class Client {
         return r.nextInt(to-from) + from;
     }
 
-
+    //received a vote that a server has been locked
     synchronized public void incrementVotesReceived(int serverId) {
         votesReceived++;
         serversLocked.add(serverId);
@@ -247,6 +253,7 @@ public class Client {
         return serversResponded.size();
     }
 
+    //add inquire message to be aswered later
     public void addInquireMessage(InquireMessage message) {
         for(InquireMessage im : inquireMessages){
             if(im.requestMessage.requestNum == message.requestMessage.requestNum
@@ -256,6 +263,7 @@ public class Client {
         inquireMessages.add(message);
     }
 
+    //answer any inquires we have received
     public void handleInquires() throws IOException {
         if(inquireMessages == null || inquireMessages.isEmpty())
             return;
@@ -273,6 +281,7 @@ public class Client {
 
     }
 
+    //we have been paritioned
     public void partition() {
         partitioned = !partitioned;
     }

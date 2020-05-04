@@ -25,6 +25,7 @@ public class ServerCommunicationInterface implements Runnable {
 
     }
 
+    //send various messages
     synchronized void sendMessage(ReplyMessage replyMessage) throws IOException {
         out.writeObject(replyMessage);
     }
@@ -97,11 +98,5 @@ public class ServerCommunicationInterface implements Runnable {
     }
 
 
-    //close streams
-    void clean() throws IOException {
-        out.close();
-        in.close();
-        socket.close();
-    }
 
 }

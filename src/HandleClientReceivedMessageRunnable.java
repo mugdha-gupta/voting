@@ -1,5 +1,8 @@
-import java.io.File;
 import java.io.IOException;
+
+/*
+ * Handles any incoming Client message
+ */
 
 public class HandleClientReceivedMessageRunnable implements Runnable {
     Client client;
@@ -16,6 +19,7 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             System.out.println("error: received null message in reply to request");
         int requestNum = client.getRequestNum();
 
+        //If its a  reply message, increment votes received
         if(returnMessage instanceof ReplyMessage){
             ReplyMessage message = (ReplyMessage) returnMessage;
             if(requestNum > message.requestMessage.requestNum)
@@ -29,6 +33,7 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             return;
         }
 
+        //increment fails received
         if(returnMessage instanceof FailedMessage){
             FailedMessage message = (FailedMessage)returnMessage;
             if(requestNum > message.requestMessage.requestNum)
@@ -42,6 +47,7 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             return;
         }
 
+        //Check if we can yield the vote given to us
         if(returnMessage instanceof InquireMessage){
             InquireMessage message = (InquireMessage)returnMessage;
             if(message.requestMessage == null)
@@ -60,6 +66,7 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             client.addInquireMessage(message);
         }
 
+        //Server can't return a reply now, but may do so later
         if(returnMessage instanceof WaitMessage){
             WaitMessage message = (WaitMessage) returnMessage;
             if(requestNum > message.requestNum)
@@ -71,6 +78,8 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             }
             return;
         }
+
+        //When all servers are done commiting, we can release the resource
         if(returnMessage instanceof DoneMessage){
             DoneMessage message = (DoneMessage)returnMessage;
             if(requestNum > message.requestNum)
@@ -79,17 +88,19 @@ public class HandleClientReceivedMessageRunnable implements Runnable {
             return;
         }
 
+        //we have detected a partition
         if(returnMessage instanceof PartitionMessage){
             client.partition();
             return;
         }
 
+        //Print the file contents
         if(returnMessage instanceof FileContentsMessage){
             FileContentsMessage message = (FileContentsMessage) returnMessage;
             client.readMessageReply = true;
             client.file = message;
             if(message.message == null)
-                System.out.println("This");
+                System.out.println("This file does not exist on the server");
         }
 
 
