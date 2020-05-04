@@ -4,10 +4,14 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
+//this class is started by the user to spin up a client
 public class Client {
+    //Client info
     private static Client client;
     private int clientId;
     ClientCommunicationInterface communicationInterface;
+
+    //request info
     private int requestNum;
     private int votesReceived;
     int numFails;
@@ -17,10 +21,15 @@ public class Client {
     int server1;
     int fileId;
     CountDownLatch done;
+
+    //critical section indicators
     boolean inCS;
     boolean partitioned;
+
+    //information used to read files
     public boolean readMessageReply;
     public FileContentsMessage file;
+
     public static void main(String[] args) throws IOException, InterruptedException {
         if(args.length != 1)
             return;
@@ -30,6 +39,8 @@ public class Client {
 
     public Client(int id) throws IOException, InterruptedException {
         System.out.println("client " + id + " starts at time: " + System.currentTimeMillis());
+
+        //initialize
         client = this;
         clientId = id;
         communicationInterface = new ClientCommunicationInterface(client);
@@ -45,33 +56,48 @@ public class Client {
         readMessageReply = false;
         file = null;
 
+        //start listening for message on a new thread
         Thread thread = new Thread(communicationInterface);
         thread.start();
+
+        //if we don't detect a partition, we will
+        //create 15 requests
         while(!partitioned && requestNum < 15){
             requestNum++;
             fileId = generateRequestId();
             requestMessage();
         }
 
+        //if a partition was detected, we send an acknowledgemetn to the Proxy
         if(partitioned)
             communicationInterface.sendAcknowledgement(new AcknowledgementMessage());
+
+        //we wait for some time to let the messages in transit catch up before we create any new requests
         while (partitioned){
             Thread.sleep(1000);
         }
 
+        //create 5 more requests
         for(int i = 0 ;i < 5; i++){
             requestNum++;
             fileId = generateRequestId();
             requestMessage();
         }
 
+        //create one read file request
         readFile();
-        System.out.println("done");
+
+        //let the proxy know you are finished
         communicationInterface.sendMessage(new FinishedMessage(clientId));
-        shutdown();
+
+        //exit
+        System.exit(0);
     }
 
+    //this method attempts to read the contents of a random file
     private void readFile() throws IOException, InterruptedException {
+
+        //get a file and server number
         int fileId = generateRequestId();
         ArrayList<Integer> servers = new ArrayList<>();
         server1 = Util.hash(fileId);
@@ -80,29 +106,33 @@ public class Client {
         servers.add(Util.getServer3(server1));
         Random ran = new Random();
         int serverToRead = servers.get(ran.nextInt(servers.size()));
+
+        //send read request
         System.out.println("Attemting to read contents of file " + fileId + " on server " + server1);
         communicationInterface.sendMessage(new ReadMessage(clientId, serverToRead, fileId));
+
+        //we will wait 15 seconds for a reply, otherwise we know that server is unreachable
         long start = System.currentTimeMillis();
         while(!readMessageReply && (System.currentTimeMillis() - start) < Util.TIMEOUT_THRESHOLD){
             Thread.sleep(1000);
         }
-        if(!readMessageReply)
+        if(!readMessageReply) //the server wasn't reachable
             System.out.println("The random server chosen to read this message on was not available");
-        else if(readMessageReply && file.message == null)
+        else if(readMessageReply && file.message == null) //the server was reachable but the file didn't exist
             System.out.println("This file does not exist");
-        else
+        else //the file contents were returned
             System.out.println("The file contained the following contents \n" + file.message);
     }
 
-    private void shutdown() {
-        System.exit(0);
-    }
-
+    //this method sends a request message and waits until the request resolves
     private void requestMessage() throws IOException, InterruptedException {
+        //get the first server this file is stored on
         server1 = Util.hash(fileId);
-        String message = "client " + clientId + ": --message #" + requestNum + " , servers " + server1 + ", "
+        //generate commti message
+        String message = "client " + clientId + ": --message #" + requestNum + ", servers " + server1 + ", "
                 + Util.getServer2(server1) + ", & " + Util.getServer3(server1);
         System.out.println(message);
+        //send teh message to all three servers
         communicationInterface.sendRequest(
                 new RequestMessage(clientId, fileId, server1, requestNum, message)
         );
@@ -113,13 +143,15 @@ public class Client {
                 new RequestMessage(clientId, fileId, Util.getServer3(server1), requestNum, message)
         );
 
+        //after all respond, or 15 seconds, attempt to enter the critical section
         long start = System.currentTimeMillis();
         while(getNumResponded() < 3 && (System.currentTimeMillis() - start) < Util.TIMEOUT_THRESHOLD){
         }
         enterCS();
 
+        //if we weren't able to enter and we haven't heard from all the servers
         if(!inCS && getNumResponded() < 3){
-            if(getNumResponded() < 2){
+            if(getNumResponded() < 2){ //we are in a partition with 0 or 1 of the servers necessary and we need to abort
                 //operation failed, move on
                 System.out.println("write for file object number " + fileId + " cannot be performed " +
                         "because the appropriate servers aren't accessible");
@@ -131,10 +163,12 @@ public class Client {
 
         }
 
-        else if(!inCS){
+        else if(!inCS){ //we ar connected to the other servers, we need to wait for a reply
             waitForGrant();
         }
 
+        //after all the servers are done commiting the message, we move on to clean up and
+        //return to main to start the next request
         while (done.getCount() > 0){
             Thread.sleep(1000);
         }
